@@ -14,7 +14,7 @@ export default function Home() {
             <h1>BrainFuel IT 🚀</h1>
 
             <p>
-              Practice real-world interview questions by language, company and
+              Practice in real-world interview questions by language, company and
               district. One simple place to get ready for Sri Lankan IT jobs.
             </p>
 
