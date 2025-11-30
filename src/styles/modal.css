@@ -1,0 +1,143 @@
+/* ================================
+   MODAL OVERLAY (background blur)
+================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+/* ================================
+   MODAL BOX – center box
+================================ */
+.modal-box {
+  width: 360px;
+  max-width: 90%;
+  background: #020617;
+  border-radius: 18px;
+  padding: 20px 22px 24px;
+  position: relative;
+  overflow: hidden;
+  color: #f9fafb;
+
+  /* 🔥 Outer glow + premium shadow */
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.9),
+    0 10px 30px rgba(0, 0, 0, 0.8),
+   0 0 45px rgba(34, 197, 94, 0.45);
+
+}
+
+/* ================================
+   🔥 Moving Neon Border Animation
+================================ */
+.modal-box::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 20px;
+  background: conic-gradient(
+     from 0deg,
+    rgba(34, 197, 94, 0.25),
+    rgba(59, 130, 246, 0.35),
+    rgba(147, 51, 234, 0.35),
+    rgba(34, 197, 94, 0.25)
+  );
+  opacity: 0.85;
+  z-index: -1;
+  animation: modalGlow 5s linear infinite;
+}
+
+/* Mask inside so glow appears as thin border only */
+.modal-box::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 17px;
+ background: rgba(2, 6, 23, 0.85);
+  z-index: -1;
+}
+
+/* 🔁 Rotate glow slowly */
+@keyframes modalGlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ================================
+   CLOSE BUTTON (X)
+================================ */
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #a1a1aa;
+  transition: 0.2s;
+}
+
+.modal-close:hover {
+  color: #fff;
+}
+
+/* ================================
+   MODAL TITLE
+================================ */
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+/* ================================
+   INPUT
+================================ */
+.modal-form input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: rgba(15, 23, 42, 0.65);
+  color: #fff;
+  outline: none;
+  margin-bottom: 14px;
+  font-size: 0.95rem;
+}
+
+.modal-form input:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.4);
+}
+
+/* ================================
+   BUTTON
+================================ */
+.modal-form .btn-primary.full {
+  width: 100%;
+  padding: 12px 16px;
+  background: #22c55e;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  color: black;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.45);
+}
+
+.modal-form .btn-primary.full:hover {
+  box-shadow: 0 10px 22px rgba(34, 197, 94, 0.6);
+  transform: translateY(-1px);
+}
