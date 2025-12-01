@@ -8,13 +8,15 @@ import JavaPage from "./pages/JavaPage";
 import { AuthProvider } from "./context/AuthContext";
 import AuthModal from "./components/AuthModal";
 import ContactUs from "./pages/ContactUs.jsx";
-import AdminPage from "./pages/AdminLogin";
+import Admin from "./Admin/admin";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   const [modalMode, setModalMode] = useState(null);
+
+  
 
   return (
     <AuthProvider>
@@ -33,7 +35,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/java" element={<JavaPage />} />
           <Route path="/contact" element={<ContactUs />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
 
         {modalMode && (
