@@ -1,0 +1,275 @@
+/* Page wrapper */
+.admin-page {
+  min-height: 100vh;
+  background: #020617;
+  color: #e5e7eb;
+  padding: 20px 24px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+/* Header */
+.admin-header h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.admin-subtitle {
+  font-size: 0.95rem;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+/* Language tabs */
+.admin-lang-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.lang-tab {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid #4b5563;
+  background: transparent;
+  color: #e5e7eb;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.lang-tab--active {
+  background: #22c55e;
+  color: #020617;
+  border-color: #22c55e;
+}
+
+/* Main layout */
+.admin-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 18px;
+  margin-top: 8px;
+}
+
+/* Sidebar */
+.admin-sidebar {
+  background: #020617;
+  border-radius: 16px;
+  padding: 14px 12px 16px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+
+.sidebar-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.sidebar-districts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.district-btn {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #4b5563;
+  background: transparent;
+  color: #e5e7eb;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.district-btn--active {
+  background: #0ea5e9;
+  border-color: #0ea5e9;
+  color: #020617;
+}
+
+.sidebar-companies {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.company-btn {
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #374151;
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.company-btn--active {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3);
+}
+
+.company-name {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.company-address {
+  display: block;
+  font-size: 0.78rem;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+.sidebar-empty {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+/* Main panel */
+.admin-main {
+  background: #020617;
+  border-radius: 16px;
+  padding: 16px 18px 20px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+
+.company-header h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.company-meta {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+/* Questions */
+.questions-section {
+  margin-top: 16px;
+}
+
+.questions-section h3,
+.add-question-section h3 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.empty-questions {
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.questions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.question-item {
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid #374151;
+  font-size: 0.9rem;
+}
+
+/* Add question */
+.add-question-section {
+  margin-top: 18px;
+}
+
+.add-question-form textarea {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #4b5563;
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  padding: 10px;
+  font-size: 0.9rem;
+  outline: none;
+  resize: vertical;
+  min-height: 70px;
+  margin-bottom: 10px;
+}
+
+.add-question-form textarea:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
+}
+
+/* Re-use your existing green button class if you already have .btn-primary.full */
+.btn-primary.full {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #22c55e;
+  color: #020617;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.q-label,
+.a-label {
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.qa-actions {
+  margin-top: 6px;
+  display: flex;
+  gap: 8px;
+}
+
+.qa-btn {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  border: 1px solid #4b5563;
+  background: transparent;
+  color: #e5e7eb;
+  cursor: pointer;
+}
+
+.qa-btn-edit {
+  border-color: #22c55e;
+}
+
+.qa-btn-delete {
+  border-color: #ef4444;
+  color: #fecaca;
+}
+
+.qa-btn-cancel {
+  margin-top: 8px;
+  border-color: #9ca3af;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #d1d5db;
+  margin-bottom: 4px;
+  margin-top: 8px;
+}
+
+.add-actions-row {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
