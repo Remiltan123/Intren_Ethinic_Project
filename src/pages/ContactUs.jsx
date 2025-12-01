@@ -3,9 +3,10 @@ import "../styles/contactus.css";
 import emailjs from "@emailjs/browser";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // 🔐 EmailJS config
-const SERVICE_ID = "service_zjhcunj";
+const SERVICE_ID = "service_zjhcunj"; //service_zjhcunj
 const TEMPLATE_ID = "template_rqnitmj";
 const PUBLIC_KEY = "vTDh9D6uYL4B7e98W";
 

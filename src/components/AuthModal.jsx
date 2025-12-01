@@ -1,237 +1,149 @@
 // src/components/AuthModal.jsx
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/modal.css";
-
-const ADMIN_EMAIL = "dhanoshiganratnarajah2001@gmail.com";
+import { toast } from "react-toastify";
 
 export default function AuthModal({ mode, onClose }) {
-  const { signupUser, loginUser, loginAdmin } = useAuth();
-  const navigate = useNavigate();
+  const { signupUser, loginUser } = useAuth();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [adminEmail, setAdminEmail] = useState("");
-  const [adminPass, setAdminPass] = useState("");
-
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // modal close aana podhu reset
+  const isSignup = mode === "signup";
+
+  // reset when mode changes or modal closes
   useEffect(() => {
-    if (!mode) {
-      setName("");
-      setEmail("");
-      setPassword("");
-      setAdminEmail("");
-      setAdminPass("");
-      setError("");
-      setLoading(false);
-    }
+    setName("");
+    setEmail("");
+    setPassword("");
+    setError("");
+    setLoading(false);
   }, [mode]);
 
-  if (!mode) return null;
-
-  const isSignup = mode === "signup";
-  const isLogin = mode === "login";
-  const isAdmin = mode === "admin";
-
-  // USER SIGNUP
-  async function handleSignup(e) {
-    e.preventDefault();
-    if (!name || !email || !password) {
-      setError("Name, email and password required machan.");
-      return;
-    }
-    setLoading(true);
-    const res = await signupUser({ name, email, password });
-    setLoading(false);
-
-    if (!res.ok) {
-      setError(res.message || "Signup failed.");
-      return;
-    }
-
+  function handleClose() {
     setError("");
-   toast.success("Sign up success! You are now logged in.");
+    setLoading(false);
     onClose();
   }
 
-  // USER LOGIN
-  async function handleLogin(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-
-    if (!email || !password) {
-      setError("Email and password required.");
-      return;
-    }
-
     setLoading(true);
-    const res = await loginUser({ email, password });
-    setLoading(false);
+    setError("");
 
-    if (!res.ok) {
-      // 🔥 Special handling for Firebase error codes
-      if (res.code === "auth/user-not-found") {
-        setError("No account found for this email. Please sign up first.");
-        toast.error("Please sign up first.  ✨");
-      } else if (res.code === "auth/wrong-password") {
-        setError("Password mismatch. Please check your password.");
-      } else if (res.code === "auth/invalid-email") {
-        setError("Invalid email format.");
+    try {
+      if (isSignup) {
+        // SIGNUP
+        const res = await signupUser({ name, email, password });
+
+        if (!res.ok) {
+          const msg =
+            res.message || "Sign up failed. Please check your details.";
+          setError(msg);
+          toast.error(msg);
+          setLoading(false);
+          return;
+        }
+
+        toast.success("Account created successfully. Welcome!");
       } else {
-        setError(res.message || "Login failed.");
+        // LOGIN
+        const res = await loginUser({ email, password });
+
+        if (!res.ok) {
+          const msg =
+            res.message ||
+            "Login failed. Please check your email and password.";
+          setError(msg);
+          toast.error(msg);
+          setLoading(false);
+          return;
+        }
+
+        toast.success("Logged in successfully.");
       }
-      return;
+
+      setLoading(false);
+      handleClose();
+    } catch (err) {
+      console.error("AuthModal submit error:", err);
+      const msg = "Something went wrong. Please try again.";
+      setError(msg);
+      toast.error(msg);
+      setLoading(false);
     }
-
-    // success
-    setError("");
-    toast.success("Login successful! Welcome back.");
-    onClose();
-  }
-
-  // ADMIN LOGIN
-  async function handleAdminLogin(e) {
-    e.preventDefault();
-
-    if (!adminEmail || !adminPass) {
-      setError("Admin email and password required.");
-      return;
-    }
-
-    // ✅ Only this email allowed for admin modal
-    if (adminEmail !== ADMIN_EMAIL) {
-      setError("Only the main admin email can login here.");
-      return;
-    }
-
-    setLoading(true);
-    const res = await loginAdmin({ email: adminEmail, password: adminPass });
-    setLoading(false);
-
-    if (!res.ok) {
-      setError(res.message || "Admin access denied.");
-      return;
-    }
-
-    setError("");
-    toast.success("Admin login success.");
-    onClose();
-    // 🔥 after admin login → go to admin page
-    navigate("/admin");
   }
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div
-        className="modal-box"
-        onClick={(e) => e.stopPropagation()} // inside click => don't close
-      >
+    <div className="modal-overlay">
+      <div className="modal-box">
         {/* CLOSE BUTTON */}
-        <button className="modal-close" onClick={onClose}>
+        <div className="modal-close" onClick={handleClose}>
           ✕
-        </button>
+        </div>
 
         {/* TITLE */}
         <h2 className="modal-title">
-          {isSignup && "Create your account"}
-          {isLogin && "Login to your account"}
-          {isAdmin && "Admin login"}
+          {isSignup ? "Create your CodeCeylon account" : "Login to CodeCeylon"}
         </h2>
 
-        {/* ERROR */}
-        {error && <div className="modal-error">{error}</div>}
-
-        {/* SIGNUP FORM */}
-        {isSignup && (
-          <form onSubmit={handleSignup} className="modal-form">
+        {/* FORM – same UI, just one form for both */}
+        <form className="modal-form" onSubmit={handleSubmit}>
+          {isSignup && (
             <input
               type="text"
-              placeholder="Name (Dhanoo)"
+              placeholder="Your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
+          )}
 
-            <input
-              type="email"
-              placeholder="Email (you@example.com)"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+          <input
+            type="email"
+            placeholder="Email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-            <input
-              type="password"
-              placeholder="Password (min 6 characters)"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-            <button
-              type="submit"
-              className="btn-primary full"
-              disabled={loading}
-            >
-              {loading ? "Signing up..." : "Sign up"}
-            </button>
-          </form>
-        )}
+          <button
+            className="btn-primary full"
+            type="submit"
+            disabled={loading}
+          >
+            {loading
+              ? "Please wait..."
+              : isSignup
+              ? "Sign up"
+              : "Login"}
+          </button>
+        </form>
 
-        {/* LOGIN FORM */}
-        {isLogin && (
-          <form onSubmit={handleLogin} className="modal-form">
-            <input
-              type="email"
-              placeholder="Email (you@example.com)"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <input
-              type="password"
-              placeholder="Your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-
-            <button
-              type="submit"
-              className="btn-primary full"
-              disabled={loading}
-            >
-              {loading ? "Logging in..." : "Login"}
-            </button>
-          </form>
-        )}
-
-        {/* ADMIN FORM */}
-        {isAdmin && (
-          <form onSubmit={handleAdminLogin} className="modal-form">
-            <input
-              type="email"
-              placeholder="Admin email"
-              value={adminEmail}
-              onChange={(e) => setAdminEmail(e.target.value)}
-            />
-
-            <input
-              type="password"
-              placeholder="Admin password"
-              value={adminPass}
-              onChange={(e) => setAdminPass(e.target.value)}
-            />
-
-            <button
-              type="submit"
-              className="btn-primary full"
-              disabled={loading}
-            >
-              {loading ? "Checking..." : "Login as admin"}
-            </button>
-          </form>
+        {/* SMALL ERROR TEXT UNDER BUTTON (same old UI) */}
+        {error && (
+          <p
+            style={{
+              marginTop: 8,
+              fontSize: "0.85rem",
+              color: "#f97373", // soft red
+            }}
+          >
+            {error}
+          </p>
         )}
       </div>
     </div>

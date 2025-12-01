@@ -11,20 +11,17 @@ import ContactUs from "./pages/ContactUs.jsx";
 import AdminPage from "./pages/AdminLogin";
 
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // IMPORTANT
-
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
-  const [modalMode, setModalMode] = useState(null); 
-  // mode = "login" | "signup" | "admin" | null
+  const [modalMode, setModalMode] = useState(null);
 
   return (
     <AuthProvider>
       <BrowserRouter>
-        {/* Navbar ku openModal function pass pannrom */}
         <Navbar openModal={setModalMode} />
 
-        {/* Toastify container - global popup system */}
+        {/* 👇 VERY IMPORTANT: ToastContainer MUST be rendered once */}
         <ToastContainer
           position="top-center"
           theme="dark"
@@ -32,22 +29,13 @@ export default function App() {
           pauseOnHover={false}
         />
 
-        {/* All Routes */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/java" element={<JavaPage />} />
           <Route path="/contact" element={<ContactUs />} />
-
-          {/* Add your other subject pages later */}
-          {/* 
-          <Route path="/python" element={<PythonPage />} />
-          <Route path="/javascript" element={<JavascriptPage />} />
-          */}
-
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
 
-        {/* Auth Login/Signup/Admin modal */}
         {modalMode && (
           <AuthModal mode={modalMode} onClose={() => setModalMode(null)} />
         )}
