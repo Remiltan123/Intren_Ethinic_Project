@@ -17,7 +17,7 @@ export default function UserLogin() {
 
   useEffect(() => {
     if (!infoShown) {
-      alert(
+     toast.error (
         "If this is your first time, please Sign up first.\nOtherwise, use your email to login."
       );
       setInfoShown(true);
@@ -30,14 +30,14 @@ export default function UserLogin() {
 
     if (!result.ok) {
       if (result.reason === "no-account") {
-        alert("No account found. Please Sign up first, machan.");
+        toast.error("No account found. Please Sign up first, machan.");
       } else {
-        alert("Email does not match saved account. Try again.");
+        toast.error("Email does not match saved account. Try again.");
       }
       return;
     }
 
-    alert("Login successful! Welcome back.");
+    toast.success("Login successful! Welcome back.");
     navigate("/");
   }
 
