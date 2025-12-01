@@ -3,83 +3,84 @@ import { useAuth } from "../context/AuthContext";
 
 export default function AdminAccessModal({ onClose, onGoToAdmin }) {
   const { loginAdmin, createAdmin } = useAuth();
- 
+
+  // LOGIN FORM
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // UI state
   const [status, setStatus] = useState("");
   const [statusType, setStatusType] = useState("info");
   const [canGoToAdmin, setCanGoToAdmin] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // 🔥 Add Admin Section toggle
+  // ADD ADMIN FORM
   const [showAddAdmin, setShowAddAdmin] = useState(false);
-
-  // Add admin form values
-  const [newName, setNewName] = useState("");       // ⬅️ NEW
+  const [newName, setNewName] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
+  // ---------- ADMIN LOGIN ----------
   async function handleLogin(e) {
     e.preventDefault();
-    setLoading(true);
     setStatus("");
+    setLoading(true);
+    setCanGoToAdmin(false);
+    setShowAddAdmin(false); // hide add-admin section until verified
 
-    try {
-      await loginAdmin(email, password);
+    const res = await loginAdmin({ email, password });
 
-      setStatusType("info");
-      setStatus("Signed in. Checking admin access…");
-
-      // Later: real admin role check
-      const isAdmin = true;
-
-      if (isAdmin) {
-        setStatusType("ok");
-        setStatus("Admin access verified.");
-        setCanGoToAdmin(true);
-      } else {
-        setStatusType("error");
-        setStatus("Not an admin.");
-      }
-    } catch (err) {
+    if (!res.ok) {
       setStatusType("error");
-      setStatus(err.message || "Login failed.");
+      setStatus(res.message || "Login failed.");
+      setCanGoToAdmin(false);
+    } else {
+      setStatusType("ok");
+      setStatus("Admin access verified.");
+
+      // Enable Go To Admin
+      setCanGoToAdmin(true);
+
+      // Allow add-admin section only for admins
+      setShowAddAdmin(true);
     }
 
     setLoading(false);
   }
 
-  // 🔥 Add new admin
+  // ---------- CREATE NEW ADMIN ----------
   async function handleAddAdmin(e) {
     e.preventDefault();
+
     setStatusType("info");
     setStatus("Creating admin...");
 
-    try {
-      // ⬇️ Name + email + password
-      await createAdmin(newEmail, newPassword, newName);
+    const res = await createAdmin({
+      name: newName,
+      email: newEmail,
+      password: newPassword,
+    });
 
-      setStatusType("ok");
-      setStatus("New admin created successfully!");
-
-      // reset fields
-      setNewName("");
-      setNewEmail("");
-      setNewPassword("");
-      setShowAddAdmin(false);
-
-    } catch (err) {
+    if (!res.ok) {
       setStatusType("error");
-      setStatus(err.message || "Error creating admin.");
+      setStatus(res.message || "Error creating admin.");
+      return;
     }
+
+    setStatusType("ok");
+    setStatus("New admin created successfully!");
+
+    // reset fields
+    setNewName("");
+    setNewEmail("");
+    setNewPassword("");
   }
 
   return (
     <div className="modal-overlay">
       <div className="modal-box">
 
-        {/* CLOSE BUTTON */}
+        {/* CLOSE */}
         <div className="modal-close" onClick={onClose}>✕</div>
 
         {/* TITLE */}
@@ -87,6 +88,7 @@ export default function AdminAccessModal({ onClose, onGoToAdmin }) {
 
         {/* LOGIN SECTION */}
         <h3 style={{ marginBottom: 10 }}>Login to Admin</h3>
+
         <form className="modal-form" onSubmit={handleLogin}>
           <input
             type="email"
@@ -104,106 +106,73 @@ export default function AdminAccessModal({ onClose, onGoToAdmin }) {
             required
           />
 
-          <button className="btn-primary full" type="submit">
+          <button className="btn-primary full" type="submit" disabled={loading}>
             {loading ? "Please wait..." : "Login"}
           </button>
         </form>
 
-        {/* STATUS */}
+        {/* STATUS MESSAGE */}
         {status && (
-          <p
-            style={{
-              marginTop: 6,
-              fontSize: "0.85rem",
-              color:
-                statusType === "ok"
-                  ? "#22c55e"
-                  : statusType === "error"
-                  ? "#ef4444"
-                  : "#fde047",
-            }}
-          >
+          <p className="modal-status" data-type={statusType}>
             {status}
           </p>
         )}
 
-        {/* Go to admin */}
+        {/* GO TO ADMIN */}
         <button
-          style={{
-            marginTop: 10,
-            padding: "10px 18px",
-            borderRadius: "999px",
-            border: "1px solid #fff",
-            background: "transparent",
-            color: "#fff",
-            width: "100%",
-            cursor: canGoToAdmin ? "pointer" : "not-allowed",
-            opacity: canGoToAdmin ? 1 : 0.5,
+          className="btn-outline full"
+          disabled={!canGoToAdmin}
+          onClick={() => {
+            if (!canGoToAdmin) return;
+            onGoToAdmin();
+            onClose();
           }}
-          onClick={() => canGoToAdmin && onGoToAdmin()}
+          style={{ marginTop: 10 }}
         >
           Go to Admin
         </button>
 
         {/* DIVIDER */}
-        <hr style={{ margin: "18px 0", borderColor: "rgba(148,148,148,0.3)" }} />
+        {canGoToAdmin && (
+          <hr className="modal-divider" />
+        )}
 
-        {/* MANAGE ADMINS */}
-        <h3 style={{ marginBottom: 10 }}>Manage Admins</h3>
+        {/* ADD NEW ADMIN SECTION — ONLY VISIBLE AFTER LOGIN */}
+        {canGoToAdmin && (
+          <>
+            <h3 style={{ marginBottom: 10 }}>Manage Admins</h3>
 
-        <button
-          style={{
-            padding: "10px 18px",
-            borderRadius: "999px",
-            border: "1px solid #fff",
-            width: "100%",
-            background: "transparent",
-            color: "#fff",
-            cursor: "pointer",
-            marginBottom: showAddAdmin ? 12 : 0,
-          }}
-          onClick={() => setShowAddAdmin(!showAddAdmin)}
-        >
-          {showAddAdmin ? "Cancel" : "Add New Admin"}
-        </button>
+            {/* Add admin form (always visible after login) */}
+            <form className="modal-form" onSubmit={handleAddAdmin}>
+              <input
+                type="text"
+                placeholder="Admin name"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                required
+              />
 
-        {/* 🔥 Slide-down add admin form */}
-        {showAddAdmin && (
-          <form
-            className="modal-form"
-            onSubmit={handleAddAdmin}
-            style={{
-              marginTop: 12,
-              paddingTop: 10,
-              borderTop: "1px solid rgba(148,148,148,0.3)",
-            }}
-          >
-            <input
-              type="text"
-              placeholder="Admin name"
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              required
-            />
+              <input
+                type="email"
+                placeholder="New admin email"
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+                required
+              />
 
-            <input
-              type="email"
-              placeholder="New admin email"
-              value={newEmail}
-              onChange={(e) => setNewEmail(e.target.value)}
-              required
-            />
+              <input
+                type="password"
+                placeholder="New admin password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+              />
 
-            <input
-              type="password"
-              placeholder="New admin password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
-
-            <button className="btn-primary full">Grant Admin</button>
-          </form>
+              <button className="btn-primary full">
+                Grant Admin
+              </button>
+            </form>
+          </>
         )}
       </div>
     </div>

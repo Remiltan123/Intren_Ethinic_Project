@@ -1,5 +1,5 @@
 /* ================================
-   MODAL OVERLAY (background blur)
+   OVERLAY (background blur)
 ================================ */
 .modal-overlay {
   position: fixed;
@@ -13,7 +13,7 @@
 }
 
 /* ================================
-   MODAL BOX – center box
+   MODAL BOX (glowing box)
 ================================ */
 .modal-box {
   width: 360px;
@@ -25,17 +25,16 @@
   overflow: hidden;
   color: #f9fafb;
 
-  /* 🔥 Outer glow + premium shadow */
+  /* PREMIUM glow */
   border: 1px solid rgba(148, 163, 184, 0.35);
   box-shadow:
     0 0 0 1px rgba(15, 23, 42, 0.9),
     0 10px 30px rgba(0, 0, 0, 0.8),
-   0 0 45px rgba(34, 197, 94, 0.45);
-
+    0 0 45px rgba(34, 197, 94, 0.45);
 }
 
 /* ================================
-   🔥 Moving Neon Border Animation
+   MOVING GLOW BORDER
 ================================ */
 .modal-box::before {
   content: "";
@@ -43,7 +42,7 @@
   inset: -2px;
   border-radius: 20px;
   background: conic-gradient(
-     from 0deg,
+    from 0deg,
     rgba(34, 197, 94, 0.25),
     rgba(59, 130, 246, 0.35),
     rgba(147, 51, 234, 0.35),
@@ -54,35 +53,31 @@
   animation: modalGlow 5s linear infinite;
 }
 
-/* Mask inside so glow appears as thin border only */
+/* MASK INNER AREA */
 .modal-box::after {
   content: "";
   position: absolute;
   inset: 1px;
   border-radius: 17px;
- background: rgba(2, 6, 23, 0.85);
+  background: rgba(2, 6, 23, 0.88);
   z-index: -1;
 }
 
-/* 🔁 Rotate glow slowly */
+/* ANIMATION */
 @keyframes modalGlow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 /* ================================
-   CLOSE BUTTON (X)
+   CLOSE BUTTON
 ================================ */
 .modal-close {
   position: absolute;
   top: 14px;
   right: 16px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 22px;
   color: #a1a1aa;
   transition: 0.2s;
 }
@@ -92,16 +87,16 @@
 }
 
 /* ================================
-   MODAL TITLE
+   TITLE TEXT
 ================================ */
 .modal-title {
-  font-size: 1.25rem;
+  font-size: 1.28rem;
   font-weight: 600;
   margin-bottom: 18px;
 }
 
 /* ================================
-   INPUT
+   INPUT FIELD
 ================================ */
 .modal-form input {
   width: 100%;
@@ -121,23 +116,71 @@
 }
 
 /* ================================
-   BUTTON
+   PRIMARY (GREEN) BUTTON
 ================================ */
-.modal-form .btn-primary.full {
+.btn-primary.full {
   width: 100%;
   padding: 12px 16px;
   background: #22c55e;
-  border-radius: 999px;
+  border-radius: 50px;
   font-weight: 600;
-  font-size: 0.98rem;
-  color: black;
+  font-size: 0.97rem;
+  color: #000;
   border: none;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: 0.2s;
   box-shadow: 0 6px 16px rgba(34, 197, 94, 0.45);
 }
 
-.modal-form .btn-primary.full:hover {
-  box-shadow: 0 10px 22px rgba(34, 197, 94, 0.6);
+.btn-primary.full:hover {
   transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(34, 197, 94, 0.6);
+}
+
+/* ================================
+   OUTLINE (WHITE BORDER) BUTTON
+================================ */
+.btn-outline.full {
+  width: 100%;
+  padding: 11px 16px;
+  background: transparent;
+  color: #fff;
+  border-radius: 50px;
+  border: 1px solid #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-outline.full:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ================================
+   DIVIDER
+================================ */
+.modal-divider {
+  border: none;
+  border-top: 1px solid rgba(148, 163, 184, 0.25);
+  margin: 18px 0;
+}
+
+/* ================================
+   STATUS TEXT (success, error)
+================================ */
+.modal-status {
+  margin-top: 6px;
+  font-size: 0.85rem;
+}
+
+.modal-status[data-type="ok"] {
+  color: #22c55e;
+}
+
+.modal-status[data-type="error"] {
+  color: #ef4444;
+}
+
+.modal-status[data-type="info"] {
+  color: #fde047;
 }

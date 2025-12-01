@@ -56,7 +56,7 @@ export default function AuthModal({ mode, onClose }) {
     }
 
     setError("");
-    alert("Sign up success! You are now logged in.");
+   toast.success("Sign up success! You are now logged in.");
     onClose();
   }
 
@@ -77,7 +77,7 @@ export default function AuthModal({ mode, onClose }) {
       // 🔥 Special handling for Firebase error codes
       if (res.code === "auth/user-not-found") {
         setError("No account found for this email. Please sign up first.");
-        alert("First time aa? Please Sign Up first, machan ✨");
+        toast.error("Please sign up first.  ✨");
       } else if (res.code === "auth/wrong-password") {
         setError("Password mismatch. Please check your password.");
       } else if (res.code === "auth/invalid-email") {
@@ -90,7 +90,7 @@ export default function AuthModal({ mode, onClose }) {
 
     // success
     setError("");
-    alert("Login successful! Welcome back.");
+    toast.success("Login successful! Welcome back.");
     onClose();
   }
 
@@ -119,7 +119,7 @@ export default function AuthModal({ mode, onClose }) {
     }
 
     setError("");
-    alert("Admin login success.");
+    toast.success("Admin login success.");
     onClose();
     // 🔥 after admin login → go to admin page
     navigate("/admin");

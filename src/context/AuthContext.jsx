@@ -1,5 +1,5 @@
-// src/context/AuthContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
+
 import {
   onAuthStateChanged,
   createUserWithEmailAndPassword,
@@ -22,12 +22,10 @@ import { auth, db } from "../firebase";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // { email, name, role }
   const [loading, setLoading] = useState(true);
 
-  // -------------------------------------------------
-  // Listen for Firebase Auth login/logout changes
-  // -------------------------------------------------
+  // 🔄 Listen for login/logout
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (fbUser) => {
       if (!fbUser) {
@@ -36,7 +34,7 @@ export function AuthProvider({ children }) {
         return;
       }
 
-      // Check if user is admin
+      // CHECK ADMIN ROLE
       let role = "user";
       try {
         const q = query(
@@ -46,7 +44,7 @@ export function AuthProvider({ children }) {
         const snap = await getDocs(q);
         if (!snap.empty) role = "admin";
       } catch (err) {
-        console.error("Admin check error:", err);
+        console.error("Error checking admin role:", err);
       }
 
       setUser({
@@ -54,15 +52,16 @@ export function AuthProvider({ children }) {
         name: fbUser.displayName || "",
         role,
       });
+
       setLoading(false);
     });
 
     return () => unsub();
   }, []);
 
-  // -------------------------------------------------
-  // USER SIGNUP (normal user account)
-  // -------------------------------------------------
+  // ============================================================
+  // NORMAL USER SIGNUP
+  // ============================================================
   async function signupUser({ name, email, password }) {
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
@@ -72,51 +71,31 @@ export function AuthProvider({ children }) {
       await setDoc(doc(db, "users", cred.user.uid), {
         uid: cred.user.uid,
         email,
-        name,
+        name: name || "",
         role: "user",
         createdAt: Date.now(),
       });
 
-      setUser({ email, name, role: "user" });
+      setUser({
+        email,
+        name,
+        role: "user",
+      });
+
       return { ok: true };
     } catch (err) {
       return { ok: false, message: err.message };
     }
   }
 
-  async function createAdmin({ name, email, password }) {
-  try {
-    // Create Firebase Auth user
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
-
-    // Add display name
-    if (name) {
-      await updateProfile(cred.user, { displayName: name });
-    }
-
-    // Write to Firestore
-    await setDoc(doc(db, "admins", cred.user.uid), {
-      uid: cred.user.uid,
-      email,
-      name,
-      createdAt: Date.now(),
-    });
-
-    return { ok: true };
-
-  } catch (err) {
-    console.error("createAdmin error:", err);
-    return { ok: false, message: err.message };
-  }
-}
-
-  // -------------------------------------------------
-  // LOGIN USER
-  // -------------------------------------------------
+  // ============================================================
+  // NORMAL USER LOGIN
+  // ============================================================
   async function loginUser({ email, password }) {
     try {
       const cred = await signInWithEmailAndPassword(auth, email, password);
 
+      // check if admin
       let role = "user";
       const q = query(
         collection(db, "admins"),
@@ -137,13 +116,41 @@ export function AuthProvider({ children }) {
     }
   }
 
-  // -------------------------------------------------
-  // LOGIN ADMIN
-  // -------------------------------------------------
+  // ============================================================
+  // CREATE ADMIN (from Admin modal)
+  // ============================================================
+  async function createAdmin({ name, email, password }) {
+    try {
+      // create user
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+      if (name) {
+        await updateProfile(cred.user, { displayName: name });
+      }
+
+      // add to admins collection
+      await setDoc(doc(db, "admins", cred.user.uid), {
+        uid: cred.user.uid,
+        email,
+        name: name || "",
+        createdAt: Date.now(),
+      });
+
+      return { ok: true };
+    } catch (err) {
+      console.log("createAdmin error:", err);
+      return { ok: false, message: err.message };
+    }
+  }
+
+  // ============================================================
+  // LOGIN AS ADMIN
+  // ============================================================
   async function loginAdmin({ email, password }) {
     try {
       const cred = await signInWithEmailAndPassword(auth, email, password);
 
+      // verify admin role
       const q = query(
         collection(db, "admins"),
         where("email", "==", email)
@@ -167,22 +174,26 @@ export function AuthProvider({ children }) {
     }
   }
 
+  // ============================================================
+  // LOGOUT
+  // ============================================================
   async function logout() {
     await signOut(auth);
     setUser(null);
   }
 
+  // CONTEXT VALUE
+  const value = {
+    user,
+    signupUser,
+    loginUser,
+    loginAdmin,
+    createAdmin,
+    logout,
+  };
+
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        signupUser,
-        loginUser,
-        loginAdmin,
-        createAdmin,   // correct one
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={value}>
       {!loading && children}
     </AuthContext.Provider>
   );

@@ -4,16 +4,19 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import JavaPage from "./pages/JavaPage";        // unga Java page
+import JavaPage from "./pages/JavaPage";
 import { AuthProvider } from "./context/AuthContext";
 import AuthModal from "./components/AuthModal";
-import ContactUs from "./pages/ContactUs.jsx";      // contact page (small c, big U)
+import ContactUs from "./pages/ContactUs.jsx";
 import AdminPage from "./pages/AdminLogin";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // IMPORTANT
 
 
 export default function App() {
-  // modal-ku mode: "login" | "signup" | "admin" | null
-  const [modalMode, setModalMode] = useState(null);
+  const [modalMode, setModalMode] = useState(null); 
+  // mode = "login" | "signup" | "admin" | null
 
   return (
     <AuthProvider>
@@ -21,27 +24,33 @@ export default function App() {
         {/* Navbar ku openModal function pass pannrom */}
         <Navbar openModal={setModalMode} />
 
+        {/* Toastify container - global popup system */}
+        <ToastContainer
+          position="top-center"
+          theme="dark"
+          autoClose={2000}
+          pauseOnHover={false}
+        />
+
+        {/* All Routes */}
         <Routes>
-          {/* Home page */}
           <Route path="/" element={<Home />} />
-
-          {/* Java page */}
           <Route path="/java" element={<JavaPage />} />
-
-          {/* Contact page */}
           <Route path="/contact" element={<ContactUs />} />
 
-          {/* later/python/js/other subject pages inga add pannalaam */}
-          {/*
+          {/* Add your other subject pages later */}
+          {/* 
           <Route path="/python" element={<PythonPage />} />
           <Route path="/javascript" element={<JavascriptPage />} />
-          etc...
           */}
+
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
 
-        {/* Center box for login / signup / admin */}
-        <AuthModal mode={modalMode} onClose={() => setModalMode(null)} />
+        {/* Auth Login/Signup/Admin modal */}
+        {modalMode && (
+          <AuthModal mode={modalMode} onClose={() => setModalMode(null)} />
+        )}
       </BrowserRouter>
     </AuthProvider>
   );
