@@ -1,5 +1,6 @@
 // src/components/AuthModal.jsx
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/modal.css";
 import { toast } from "react-toastify";
@@ -7,6 +8,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 export default function AuthModal({ mode, onClose }) {
   const { signupUser, loginUser } = useAuth();
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -29,7 +31,7 @@ export default function AuthModal({ mode, onClose }) {
   function handleClose() {
     setError("");
     setLoading(false);
-    onClose();
+    if (onClose) onClose();
   }
 
   async function handleSubmit(e) {
@@ -42,9 +44,9 @@ export default function AuthModal({ mode, onClose }) {
         // SIGNUP
         const res = await signupUser({ name, email, password });
 
-        if (!res.ok) {
+        if (!res || !res.ok) {
           const msg =
-            res.message || "Sign up failed. Please check your details.";
+            (res && res.message) || "Sign up failed. Please check your details.";
           setError(msg);
           toast.error(msg);
           setLoading(false);
@@ -56,9 +58,9 @@ export default function AuthModal({ mode, onClose }) {
         // LOGIN
         const res = await loginUser({ email, password });
 
-        if (!res.ok) {
+        if (!res || !res.ok) {
           const msg =
-            res.message ||
+            (res && res.message) ||
             "Login failed. Please check your email and password.";
           setError(msg);
           toast.error(msg);
@@ -71,6 +73,10 @@ export default function AuthModal({ mode, onClose }) {
 
       setLoading(false);
       handleClose();
+
+      // Navigate to after-login page
+      // change '/dashboard' to whatever route you want for the after-login page
+      navigate("/dashboard");
     } catch (err) {
       console.error("AuthModal submit error:", err);
       const msg = "Something went wrong. Please try again.";
@@ -122,16 +128,17 @@ export default function AuthModal({ mode, onClose }) {
           />
 
           <button className="btn-primary full" type="submit" disabled={loading}>
-  {loading ? (
-    <span className="btn-loading">
-      <ClipLoader size={18} color="#000" />
-      <span className="btn-loading-text">Please wait…</span>
-    </span>
-  ) : (
-    "Login"
-  )}
-</button>
-
+            {loading ? (
+              <span className="btn-loading">
+                <ClipLoader size={18} color="#000" />
+                <span className="btn-loading-text">Please wait…</span>
+              </span>
+            ) : isSignup ? (
+              "Create account"
+            ) : (
+              "Login"
+            )}
+          </button>
         </form>
 
         {/* SMALL ERROR TEXT UNDER BUTTON (same old UI) */}

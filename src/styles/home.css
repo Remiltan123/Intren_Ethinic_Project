@@ -31,7 +31,19 @@
 .home-inner {
   max-width: 1100px;
   margin: 0 auto;
+
+  /* 🔥 New Typography */
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;              /* Base font size */
+  line-height: 1.6;             /* Comfortable reading */
+  letter-spacing: 0.25px;       /* Slight spacing for modern feel */
+  color: #e2e8f0;               /* Light text for dark background */
+
+  /* Optional smooth rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
 
 /* HERO */
 
