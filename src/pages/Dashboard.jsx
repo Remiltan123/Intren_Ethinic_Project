@@ -81,12 +81,7 @@ export default function Dashboard() {
               onChange={(e) => setQuery(e.target.value)}
               disabled={loading}
             />
-            {/* small in-input clear button */}
-            {query && (
-              <button type="button" className="in-clear-btn" onClick={clearQuery} aria-label="Clear">
-                ×
-              </button>
-            )}
+            
           </div>
 
           <button className="dashboard-search-btn" type="submit" aria-label="Search" disabled={loading}>
