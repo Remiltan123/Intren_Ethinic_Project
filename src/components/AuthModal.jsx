@@ -39,6 +39,9 @@ export default function AuthModal({ mode, onClose }) {
     setLoading(true);
     setError("");
 
+    // 👉 default redirect path (normal user)
+    let redirectPath = "/dashboard";
+
     try {
       if (isSignup) {
         // SIGNUP
@@ -54,6 +57,7 @@ export default function AuthModal({ mode, onClose }) {
         }
 
         toast.success("Account created successfully. Welcome!");
+        // signup = normal user => redirectPath already "/dashboard"
       } else {
         // LOGIN
         const res = await loginUser({ email, password });
@@ -69,14 +73,20 @@ export default function AuthModal({ mode, onClose }) {
         }
 
         toast.success("Logged in successfully.");
+
+        // 🔥 role-based redirect
+        if (res.role === "admin") {
+          redirectPath = "/admin";
+        } else {
+          redirectPath = "/dashboard";
+        }
       }
 
       setLoading(false);
       handleClose();
 
-      // Navigate to after-login page
-      // change '/dashboard' to whatever route you want for the after-login page
-      navigate("/dashboard");
+      // ✅ Navigate to correct page based on role
+      navigate(redirectPath);
     } catch (err) {
       console.error("AuthModal submit error:", err);
       const msg = "Something went wrong. Please try again.";
@@ -96,7 +106,9 @@ export default function AuthModal({ mode, onClose }) {
 
         {/* TITLE */}
         <h2 className="modal-title">
-          {isSignup ? "Create your CodeCeylon account" : "Login to CodeCeylon"}
+          {isSignup
+            ? "Create your CodeCeylon account"
+            : "Login to CodeCeylon"}
         </h2>
 
         {/* FORM – same UI, just one form for both */}

@@ -1,15 +1,37 @@
 import { useState } from "react";
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import {
+  NavLink,
+  Link,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import "../styles/navbar.css";
 import AdminAccessModal from "../components/AdminAccessModal";
 import { useAuth } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext"; // 🔥 NEW
+
+// Common config for subject tabs
+const LANG_TABS = [
+  { key: "java", label: "Java", userPath: "/java" },
+  { key: "python", label: "Python", userPath: "/python" },
+  { key: "javascript", label: "JavaScript", userPath: "/javascript" },
+  { key: "htmlcss", label: "HTML & CSS", userPath: "/html" },
+  { key: "react", label: "React", userPath: "/css" },
+  { key: "ccc", label: "C / C++", userPath: "/cpp" },
+];
 
 export default function Navbar({ openModal }) {
   const { user, logout } = useAuth();
+  const { language, setLanguage } = useLanguage(); // 🔥 admin filter
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Admin modal open state
   const [showAdminModal, setShowAdminModal] = useState(false);
+
+  // Are we on admin page as an admin?
+  const isAdminPage =
+    user?.role === "admin" && location.pathname.startsWith("/admin");
 
   // logout
   async function handleLogout() {
@@ -21,6 +43,17 @@ export default function Navbar({ openModal }) {
   function handleGoToAdmin() {
     setShowAdminModal(false);
     navigate("/admin");
+  }
+
+  // 🔥 Subject button click behaviour (admin vs user)
+  function handleLangClick(tab) {
+    if (isAdminPage) {
+      // ADMIN SIDE: only change selected language, no route change
+      setLanguage(tab.key);
+    } else {
+      // USER SIDE: normal routing
+      navigate(tab.userPath);
+    }
   }
 
   return (
@@ -37,28 +70,39 @@ export default function Navbar({ openModal }) {
         {/* RIGHT: NAV */}
         <div className="nav-main">
           <nav className="nav-links">
+            {LANG_TABS.map((tab) => {
+              let isActive = false;
 
-            {/* Always visible navigation links */}
-            <NavLink to="/java" className="nav-btn">Java</NavLink>
-            <NavLink to="/python" className="nav-btn">Python</NavLink>
-            <NavLink to="/javascript" className="nav-btn">JavaScript</NavLink>
-            <NavLink to="/html" className="nav-btn">HTML & CSS</NavLink>
-            <NavLink to="/css" className="nav-btn">React</NavLink>
-            <NavLink to="/cpp" className="nav-btn">CC / C++</NavLink>
-            
-            
+              if (isAdminPage) {
+                // Admin side: active = current selected language
+                isActive = language === tab.key;
+              } else {
+                // User side: active based on URL path
+                isActive = location.pathname === tab.userPath;
+              }
 
-            {/* 🔥 Always show Contact (fixed) */}
-            
+              return (
+                <button
+                  key={tab.key}
+                  type="button"
+                  className={`nav-btn${isActive ? " active" : ""}`}
+                  onClick={() => handleLangClick(tab)}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
           </nav>
 
           {/* AUTH BUTTONS */}
           <div className="auth-buttons">
-
             {/* NOT LOGGED IN */}
             {!user && (
               <>
-              <NavLink to="/contact" className="nav-btn">Contact</NavLink>
+                <NavLink to="/contact" className="nav-btn">
+                  Contact
+                </NavLink>
+
                 <button
                   type="button"
                   className="btn-primary"
@@ -94,13 +138,13 @@ export default function Navbar({ openModal }) {
                     : `Hi, ${user.name || "User"}`}
                 </span>
 
-                <button
-                  className="btn-outline"
-                  onClick={handleLogout}
-                >
+                <button className="btn-outline" onClick={handleLogout}>
                   Logout
                 </button>
-                <NavLink to="/contact" className="btn-outline">Contact</NavLink>
+
+                <NavLink to="/contact" className="btn-outline">
+                  Contact
+                </NavLink>
               </>
             )}
           </div>

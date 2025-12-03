@@ -1,3 +1,4 @@
+// src/context/AuthContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 
 import {
@@ -22,10 +23,10 @@ import { auth, db } from "../firebase";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null); // { email, name, role }
+  const [user, setUser] = useState(null); // { email, name, role: 'user' | 'admin' }
   const [loading, setLoading] = useState(true);
 
-  // 🔄 Listen for login/logout
+  // 🔄 Listen for login/logout + reload (Firebase keeps session)
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (fbUser) => {
       if (!fbUser) {
@@ -34,7 +35,7 @@ export function AuthProvider({ children }) {
         return;
       }
 
-      // CHECK ADMIN ROLE
+      // ---- check ADMIN role from Firestore ----
       let role = "user";
       try {
         const q = query(
@@ -95,7 +96,7 @@ export function AuthProvider({ children }) {
     try {
       const cred = await signInWithEmailAndPassword(auth, email, password);
 
-      // check if admin
+      // check if this user is also admin
       let role = "user";
       const q = query(
         collection(db, "admins"),
@@ -110,7 +111,7 @@ export function AuthProvider({ children }) {
         role,
       });
 
-      return { ok: true };
+      return { ok: true, role };
     } catch (err) {
       return { ok: false, message: err.message };
     }
@@ -121,7 +122,6 @@ export function AuthProvider({ children }) {
   // ============================================================
   async function createAdmin({ name, email, password }) {
     try {
-      // create user
       const cred = await createUserWithEmailAndPassword(auth, email, password);
 
       if (name) {
@@ -144,7 +144,7 @@ export function AuthProvider({ children }) {
   }
 
   // ============================================================
-  // LOGIN AS ADMIN
+  // LOGIN AS ADMIN ONLY
   // ============================================================
   async function loginAdmin({ email, password }) {
     try {
@@ -168,23 +168,23 @@ export function AuthProvider({ children }) {
         role: "admin",
       });
 
-      return { ok: true };
+      return { ok: true, role: "admin" };
     } catch (err) {
       return { ok: false, message: err.message };
     }
   }
 
   // ============================================================
-  // LOGOUT
+  // LOGOUT (user or admin)
   // ============================================================
   async function logout() {
     await signOut(auth);
     setUser(null);
   }
 
-  // CONTEXT VALUE
   const value = {
     user,
+    loading,
     signupUser,
     loginUser,
     loginAdmin,
@@ -194,6 +194,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={value}>
+      {/* app render agaradhu auth state load agi mudinja apram thaan */}
       {!loading && children}
     </AuthContext.Provider>
   );

@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import ClipLoader from "react-spinners/ClipLoader";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminAccessModal({ onClose, onGoToAdmin }) {
   const { loginAdmin, createAdmin } = useAuth();
+  const navigate = useNavigate();
 
   // LOGIN FORM
   const [email, setEmail] = useState("");
@@ -26,14 +28,14 @@ export default function AdminAccessModal({ onClose, onGoToAdmin }) {
 
     const res = await loginAdmin({ email, password });
 
-    if (!res.ok) {
-      console.error("Admin login error:", res.message);
+    if (!res || !res.ok) {
+      console.error("Admin login error:", res?.message);
 
       let friendly = "Incorrect email or password. Please try again.";
 
-      if (res.message?.includes("too-many-requests")) {
+      if (res?.message?.includes("too-many-requests")) {
         friendly = "Too many attempts. Please wait a moment and try again.";
-      } else if (res.message?.includes("network-request-failed")) {
+      } else if (res?.message?.includes("network-request-failed")) {
         friendly = "Network error. Please check your internet connection.";
       }
 
@@ -45,6 +47,10 @@ export default function AdminAccessModal({ onClose, onGoToAdmin }) {
     toast.success("Admin access verified.");
     setCanGoToAdmin(true);
     setLoading(false);
+
+    // 🔥 Auto redirect to admin dashboard
+    if (onClose) onClose();
+    navigate("/admin");
   }
 
   // ---------- CREATE NEW ADMIN ----------
@@ -57,9 +63,9 @@ export default function AdminAccessModal({ onClose, onGoToAdmin }) {
       password: newPassword,
     });
 
-    if (!res.ok) {
-      console.error("createAdmin error:", res.message);
-      toast.error(res.message || "Error creating admin account.");
+    if (!res || !res.ok) {
+      console.error("createAdmin error:", res?.message);
+      toast.error(res?.message || "Error creating admin account.");
       return;
     }
 
@@ -75,7 +81,9 @@ export default function AdminAccessModal({ onClose, onGoToAdmin }) {
     <div className="modal-overlay">
       <div className="modal-box">
         {/* CLOSE */}
-        <div className="modal-close" onClick={onClose}>✕</div>
+        <div className="modal-close" onClick={onClose}>
+          ✕
+        </div>
 
         <h2 className="modal-title">Admin Access</h2>
 
@@ -100,27 +108,32 @@ export default function AdminAccessModal({ onClose, onGoToAdmin }) {
           />
 
           <button className="btn-primary full" type="submit" disabled={loading}>
-  {loading ? (
-    <span className="btn-loading">
-      <ClipLoader size={18} color="#000" />
-      <span className="btn-loading-text">Logging in…</span>
-    </span>
-  ) : (
-    "Login"
-  )}
-</button>
-
+            {loading ? (
+              <span className="btn-loading">
+                <ClipLoader size={18} color="#000" />
+                <span className="btn-loading-text">Logging in…</span>
+              </span>
+            ) : (
+              "Login"
+            )}
+          </button>
         </form>
 
-        {/* GO TO ADMIN */}
+        {/* GO TO ADMIN (optional extra button) */}
         <button
           className="btn-outline full"
           disabled={!canGoToAdmin}
           onClick={() => {
             if (!canGoToAdmin) return;
             toast.info("Redirecting to admin dashboard...");
-            onGoToAdmin();
-            onClose();
+
+            if (onGoToAdmin) {
+              onGoToAdmin(); // old behaviour from parent if used
+            } else {
+              navigate("/admin");
+            }
+
+            if (onClose) onClose();
           }}
           style={{
             marginTop: 10,
@@ -163,9 +176,7 @@ export default function AdminAccessModal({ onClose, onGoToAdmin }) {
                 required
               />
 
-              <button className="btn-primary full">
-                Grant Admin
-              </button>
+              <button className="btn-primary full">Grant Admin</button>
             </form>
           </>
         )}

@@ -12,9 +12,10 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { useLanguage } from "../context/LanguageContext";
 
 /**
- * Tech stacks (top horizontal nav)
+ * Tech stacks (for labels & Firestore paths)
  */
 const STACKS = [
   { id: "java", label: "Java" },
@@ -30,39 +31,154 @@ const STACKS = [
  */
 const COMPANIES_BY_DISTRICT = {
   Colombo: [
-    { id: "wso2", name: "WSO2", address: "20, Palm Grove, Colombo 03", stacks: ["java", "node", "js"] },
-    { id: "virtusa", name: "Virtusa", address: "752, Dr Danister De Silva Mawatha, Colombo 09", stacks: ["java", "react", "node"] },
-    { id: "syscolabs", name: "Sysco LABS", address: "55A, Dharmapala Mawatha, Colombo 03", stacks: ["java", "react", "node", "python"] },
-    { id: "ifs", name: "IFS", address: "Orion Towers 1, Dr Danister De Silva Mawatha, Colombo 09", stacks: ["java", "cpp"] },
-    { id: "ninetyninex", name: "99X", address: "Nawam Mawatha, Colombo 02", stacks: ["react", "node", "js"] },
-    { id: "hsenid", name: "hSenid", address: "No. 32, Castle Street, Colombo 08", stacks: ["java", "js"] },
+    {
+      id: "wso2",
+      name: "WSO2",
+      address: "20, Palm Grove, Colombo 03",
+      stacks: ["java", "node", "js"],
+    },
+    {
+      id: "virtusa",
+      name: "Virtusa",
+      address:
+        "752, Dr Danister De Silva Mawatha, Colombo 09",
+      stacks: ["java", "react", "node"],
+    },
+    {
+      id: "syscolabs",
+      name: "Sysco LABS",
+      address: "55A, Dharmapala Mawatha, Colombo 03",
+      stacks: ["java", "react", "node", "python"],
+    },
+    {
+      id: "ifs",
+      name: "IFS",
+      address:
+        "Orion Towers 1, Dr Danister De Silva Mawatha, Colombo 09",
+      stacks: ["java", "cpp"],
+    },
+    {
+      id: "ninetyninex",
+      name: "99X",
+      address: "Nawam Mawatha, Colombo 02",
+      stacks: ["react", "node", "js"],
+    },
+    {
+      id: "hsenid",
+      name: "hSenid",
+      address: "No. 32, Castle Street, Colombo 08",
+      stacks: ["java", "js"],
+    },
   ],
   Jaffna: [
-    { id: "loncey", name: "Loncey Tech (Pvt) Ltd", address: "259 Temple Rd, Jaffna 40000", stacks: ["react", "node", "python"] },
-    { id: "speedit", name: "Speed IT Net", address: "Jaffna", stacks: ["js", "react-native", "node"] },
-    { id: "appslanka", name: "Apps Lanka Software Solutions", address: "No.40 Palaly Road, Jaffna", stacks: ["react-native", "js", "node"] },
-    { id: "3axislabs", name: "3axislabs", address: "Jaffna", stacks: ["react", "node", "python"] },
-    { id: "technovate", name: "Technovate", address: "Jaffna", stacks: ["js", "html-css"] },
+    {
+      id: "loncey",
+      name: "Loncey Tech (Pvt) Ltd",
+      address: "259 Temple Rd, Jaffna 40000",
+      stacks: ["react", "node", "python"],
+    },
+    {
+      id: "speedit",
+      name: "Speed IT Net",
+      address: "Jaffna",
+      stacks: ["js", "react-native", "node"],
+    },
+    {
+      id: "appslanka",
+      name: "Apps Lanka Software Solutions",
+      address: "No.40 Palaly Road, Jaffna",
+      stacks: ["react-native", "js", "node"],
+    },
+    {
+      id: "3axislabs",
+      name: "3axislabs",
+      address: "Jaffna",
+      stacks: ["react", "node", "python"],
+    },
+    {
+      id: "technovate",
+      name: "Technovate",
+      address: "Jaffna",
+      stacks: ["js", "html-css"],
+    },
   ],
   Kandy: [
-    { id: "glenzsoft", name: "Glenzsoft", address: "255/21, Dr C D L Fernando Mawatha, Kandy", stacks: ["react", "node", "js"] },
-    { id: "splendorport", name: "SplendorPort", address: "Kandy", stacks: ["react", "js", "html-css"] },
-    { id: "kitsweb", name: "Kits Web Creations", address: "Kandy", stacks: ["js", "html-css"] },
-    { id: "ontech", name: "Ontech IT Solutions", address: "Kandy", stacks: ["java", "js"] },
+    {
+      id: "glenzsoft",
+      name: "Glenzsoft",
+      address:
+        "255/21, Dr C D L Fernando Mawatha, Kandy",
+      stacks: ["react", "node", "js"],
+    },
+    {
+      id: "splendorport",
+      name: "SplendorPort",
+      address: "Kandy",
+      stacks: ["react", "js", "html-css"],
+    },
+    {
+      id: "kitsweb",
+      name: "Kits Web Creations",
+      address: "Kandy",
+      stacks: ["js", "html-css"],
+    },
+    {
+      id: "ontech",
+      name: "Ontech IT Solutions",
+      address: "Kandy",
+      stacks: ["java", "js"],
+    },
   ],
   Galle: [
-    { id: "sanmark", name: "Sanmark Solutions", address: "Galle", stacks: ["react", "node", "php"] },
-    { id: "jetapp", name: "Jetapp", address: "Galle", stacks: ["react-native", "node", "js"] },
-    { id: "galleit", name: "Galle IT Solutions", address: "34 Talbot Town, Galle", stacks: ["js", "html-css"] },
-    { id: "webnifix", name: "Webnifix", address: "Galle", stacks: ["js", "react", "html-css"] },
+    {
+      id: "sanmark",
+      name: "Sanmark Solutions",
+      address: "Galle",
+      stacks: ["react", "node", "php"],
+    },
+    {
+      id: "jetapp",
+      name: "Jetapp",
+      address: "Galle",
+      stacks: ["react-native", "node", "js"],
+    },
+    {
+      id: "galleit",
+      name: "Galle IT Solutions",
+      address: "34 Talbot Town, Galle",
+      stacks: ["js", "html-css"],
+    },
+    {
+      id: "webnifix",
+      name: "Webnifix",
+      address: "Galle",
+      stacks: ["js", "react", "html-css"],
+    },
   ],
 };
 
 export default function Admin() {
+  // 🔥 navbar-selected language from context
+  const { language } = useLanguage();
+
+  // 🔁 map LanguageContext keys → Firestore stack ids
+  //   (match with STACKS & Firestore paths)
+  const languageToStack = {
+    java: "java",
+    python: "python",
+    javascript: "js",
+    htmlcss: "html-css",
+    react: "react",
+    ccc: "cpp",
+  };
+
+  const activeStack = languageToStack[language] || "java";
+
   // selection state
-  const [activeStack, setActiveStack] = useState("java");
   const [activeDistrict, setActiveDistrict] = useState("Colombo");
-  const [activeCompanyId, setActiveCompanyId] = useState(COMPANIES_BY_DISTRICT["Colombo"][0]?.id || null);
+  const [activeCompanyId, setActiveCompanyId] = useState(
+    COMPANIES_BY_DISTRICT["Colombo"][0]?.id || null
+  );
 
   // Q&A list from Firestore
   const [qaList, setQaList] = useState([]);
@@ -77,8 +193,14 @@ export default function Admin() {
   const [editingId, setEditingId] = useState(null);
 
   const districts = Object.keys(COMPANIES_BY_DISTRICT);
-  const companiesInDistrict = COMPANIES_BY_DISTRICT[activeDistrict] || [];
-  const selectedCompany = companiesInDistrict.find((c) => c.id === activeCompanyId) || companiesInDistrict[0] || null;
+
+  const companiesInDistrict =
+    COMPANIES_BY_DISTRICT[activeDistrict] || [];
+
+  const selectedCompany =
+    companiesInDistrict.find((c) => c.id === activeCompanyId) ||
+    companiesInDistrict[0] ||
+    null;
 
   // ref to companies container to scroll/focus on district change
   const companiesRef = useRef(null);
@@ -101,7 +223,10 @@ export default function Admin() {
     const unsub = onSnapshot(
       colRef,
       (snap) => {
-        const items = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        const items = snap.docs.map((d) => ({
+          id: d.id,
+          ...d.data(),
+        }));
         setQaList(items);
         setLoadingList(false);
       },
@@ -124,19 +249,28 @@ export default function Admin() {
   // companyQuestions / {stack} / {district} / {companyId} / questions
   function getCurrentCollectionRef() {
     if (!selectedCompany) return null;
-    return collection(db, "companyQuestions", activeStack, activeDistrict, selectedCompany.id, "questions");
+    return collection(
+      db,
+      "companyQuestions",
+      activeStack,
+      activeDistrict,
+      selectedCompany.id,
+      "questions"
+    );
   }
 
   function handleChangeDistrict(district) {
     setActiveDistrict(district);
-    const firstCompany = COMPANIES_BY_DISTRICT[district]?.[0] || null;
+    const firstCompany =
+      COMPANIES_BY_DISTRICT[district]?.[0] || null;
     setActiveCompanyId(firstCompany ? firstCompany.id : null);
 
     // after state set, scroll company list to top and focus first button
     setTimeout(() => {
       if (companiesRef.current) {
         companiesRef.current.scrollTop = 0;
-        const firstBtn = companiesRef.current.querySelector(".company-btn");
+        const firstBtn =
+          companiesRef.current.querySelector(".company-btn");
         if (firstBtn) firstBtn.focus();
       }
     }, 50);
@@ -146,19 +280,32 @@ export default function Admin() {
     setActiveCompanyId(companyId);
   }
 
-  function handleChangeStack(stackId) {
-    setActiveStack(stackId);
-  }
-
   async function handleSave(e) {
     e.preventDefault();
-    if (!question.trim() || !answer.trim() || !selectedCompany) return;
+    if (
+      !question.trim() ||
+      !answer.trim() ||
+      !selectedCompany
+    )
+      return;
     setSaving(true);
 
     try {
       if (editingId) {
-        const ref = doc(db, "companyQuestions", activeStack, activeDistrict, selectedCompany.id, "questions", editingId);
-        await updateDoc(ref, { question: question.trim(), answer: answer.trim(), updatedAt: serverTimestamp() });
+        const ref = doc(
+          db,
+          "companyQuestions",
+          activeStack,
+          activeDistrict,
+          selectedCompany.id,
+          "questions",
+          editingId
+        );
+        await updateDoc(ref, {
+          question: question.trim(),
+          answer: answer.trim(),
+          updatedAt: serverTimestamp(),
+        });
         toast.success("Question & answer updated.");
       } else {
         const colRef = getCurrentCollectionRef();
@@ -190,19 +337,38 @@ export default function Admin() {
     setQuestion(item.question || "");
     setAnswer(item.answer || "");
     const el = document.querySelector(".add-question-section");
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (el)
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
   }
 
   async function handleDelete(id) {
-    if (!window.confirm("Delete this question & answer permanently?")) return;
+    if (
+      !window.confirm(
+        "Delete this question & answer permanently?"
+      )
+    )
+      return;
 
     try {
-      const ref = doc(db, "companyQuestions", activeStack, activeDistrict, selectedCompany.id, "questions", id);
+      const ref = doc(
+        db,
+        "companyQuestions",
+        activeStack,
+        activeDistrict,
+        selectedCompany.id,
+        "questions",
+        id
+      );
       await deleteDoc(ref);
       toast.success("Deleted successfully.");
     } catch (err) {
       console.error("Error deleting question:", err);
-      toast.error(err.message || "Failed to delete. Please try again.");
+      toast.error(
+        err.message || "Failed to delete. Please try again."
+      );
     }
   }
 
@@ -217,29 +383,13 @@ export default function Admin() {
       {/* HEADER */}
       <header className="admin-header">
         <h1>Admin – Interview Questions</h1>
-        <p className="admin-subtitle">Manage company-wise interview questions & answers by language and district.</p>
+        <p className="admin-subtitle">
+          Manage company-wise interview questions & answers by
+          language and district.
+        </p>
       </header>
 
-      {/* STACK TABS */}
-      <nav className="admin-lang-tabs" role="tablist" aria-label="Tech stacks">
-        {STACKS.map((stack) => (
-          <button
-            key={stack.id}
-            className={stack.id === activeStack ? "lang-tab lang-tab--active" : "lang-tab"}
-            onClick={() => handleChangeStack(stack.id)}
-            aria-pressed={stack.id === activeStack}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                handleChangeStack(stack.id);
-              }
-            }}
-            title={`Select ${stack.label}`}
-          >
-            {stack.label}
-          </button>
-        ))}
-      </nav>
+      {/* 🔥 NOTE: language tabs removed here; navbar handles it */}
 
       <div className="admin-layout">
         {/* SIDEBAR */}
@@ -247,12 +397,22 @@ export default function Admin() {
           <h2 className="sidebar-title">Districts</h2>
 
           {/* Combo box / select dropdown for districts */}
-          <div className="district-select-wrap" style={{ marginBottom: "1rem" }}>
-            <label htmlFor="district-select" className="sr-only">Select district</label>
+          <div
+            className="district-select-wrap"
+            style={{ marginBottom: "1rem" }}
+          >
+            <label
+              htmlFor="district-select"
+              className="sr-only"
+            >
+              Select district
+            </label>
             <select
               id="district-select"
               value={activeDistrict}
-              onChange={(e) => handleChangeDistrict(e.target.value)}
+              onChange={(e) =>
+                handleChangeDistrict(e.target.value)
+              }
               className="district-select"
             >
               {districts.map((d) => (
@@ -263,24 +423,50 @@ export default function Admin() {
             </select>
           </div>
 
-          <h2 className="sidebar-title" style={{ marginTop: "1.5rem" }}>Companies in {activeDistrict}</h2>
-          <div className="sidebar-companies" ref={companiesRef} tabIndex={0} aria-label={`Companies in ${activeDistrict}`}>
-            {companiesInDistrict.length === 0 && <p className="sidebar-empty">No companies added yet.</p>}
+          <h2
+            className="sidebar-title"
+            style={{ marginTop: "1.5rem" }}
+          >
+            Companies in {activeDistrict}
+          </h2>
+          <div
+            className="sidebar-companies"
+            ref={companiesRef}
+            tabIndex={0}
+            aria-label={`Companies in ${activeDistrict}`}
+          >
+            {companiesInDistrict.length === 0 && (
+              <p className="sidebar-empty">
+                No companies added yet.
+              </p>
+            )}
             {companiesInDistrict.map((company) => (
               <button
                 key={company.id}
-                className={company.id === selectedCompany?.id ? "company-btn company-btn--active" : "company-btn"}
-                onClick={() => handleSelectCompany(company.id)}
+                className={
+                  company.id === selectedCompany?.id
+                    ? "company-btn company-btn--active"
+                    : "company-btn"
+                }
+                onClick={() =>
+                  handleSelectCompany(company.id)
+                }
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
                     handleSelectCompany(company.id);
                   }
                 }}
-                aria-pressed={company.id === selectedCompany?.id}
+                aria-pressed={
+                  company.id === selectedCompany?.id
+                }
               >
-                <span className="company-name">{company.name}</span>
-                <span className="company-address">{company.address}</span>
+                <span className="company-name">
+                  {company.name}
+                </span>
+                <span className="company-address">
+                  {company.address}
+                </span>
               </button>
             ))}
           </div>
@@ -291,25 +477,65 @@ export default function Admin() {
           {selectedCompany ? (
             <>
               <div className="company-header">
-                <h2>{selectedCompany.name} – {STACKS.find((s) => s.id === activeStack)?.label} questions</h2>
-                <p className="company-meta">{selectedCompany.address}</p>
+                <h2>
+                  {selectedCompany.name} –{" "}
+                  {
+                    STACKS.find(
+                      (s) => s.id === activeStack
+                    )?.label
+                  }{" "}
+                  questions
+                </h2>
+                <p className="company-meta">
+                  {selectedCompany.address}
+                </p>
               </div>
 
               <section className="questions-section">
                 <h3>Saved questions & answers</h3>
                 {loadingList ? (
-                  <p className="empty-questions">Loading…</p>
+                  <p className="empty-questions">
+                    Loading…
+                  </p>
                 ) : qaList.length === 0 ? (
-                  <p className="empty-questions">No questions added yet for this company & language.</p>
+                  <p className="empty-questions">
+                    No questions added yet for this company &
+                    language.
+                  </p>
                 ) : (
                   <ul className="questions-list">
                     {qaList.map((item) => (
-                      <li key={item.id} className="question-item">
-                        <p className="q-label"><strong>Q:</strong> {item.question}</p>
-                        <p className="a-label"><strong>A:</strong> {item.answer}</p>
+                      <li
+                        key={item.id}
+                        className="question-item"
+                      >
+                        <p className="q-label">
+                          <strong>Q:</strong>{" "}
+                          {item.question}
+                        </p>
+                        <p className="a-label">
+                          <strong>A:</strong>{" "}
+                          {item.answer}
+                        </p>
                         <div className="qa-actions">
-                          <button type="button" className="qa-btn qa-btn-edit" onClick={() => handleEdit(item)}>Edit</button>
-                          <button type="button" className="qa-btn qa-btn-delete" onClick={() => handleDelete(item.id)}>Delete</button>
+                          <button
+                            type="button"
+                            className="qa-btn qa-btn-edit"
+                            onClick={() =>
+                              handleEdit(item)
+                            }
+                          >
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            className="qa-btn qa-btn-delete"
+                            onClick={() =>
+                              handleDelete(item.id)
+                            }
+                          >
+                            Delete
+                          </button>
                         </div>
                       </li>
                     ))}
@@ -318,21 +544,60 @@ export default function Admin() {
               </section>
 
               <section className="add-question-section">
-                <h3>{editingId ? "Edit question & answer" : "Add a new question"}</h3>
-                <form className="add-question-form" onSubmit={handleSave}>
-                  <label className="field-label">Question</label>
-                  <textarea placeholder="Type the interview question here…" value={question} onChange={(e) => setQuestion(e.target.value)} rows={3} />
+                <h3>
+                  {editingId
+                    ? "Edit question & answer"
+                    : "Add a new question"}
+                </h3>
+                <form
+                  className="add-question-form"
+                  onSubmit={handleSave}
+                >
+                  <label className="field-label">
+                    Question
+                  </label>
+                  <textarea
+                    placeholder="Type the interview question here…"
+                    value={question}
+                    onChange={(e) =>
+                      setQuestion(e.target.value)
+                    }
+                    rows={3}
+                  />
 
-                  <label className="field-label">Answer</label>
-                  <textarea placeholder="Type the ideal answer or notes here…" value={answer} onChange={(e) => setAnswer(e.target.value)} rows={4} />
+                  <label className="field-label">
+                    Answer
+                  </label>
+                  <textarea
+                    placeholder="Type the ideal answer or notes here…"
+                    value={answer}
+                    onChange={(e) =>
+                      setAnswer(e.target.value)
+                    }
+                    rows={4}
+                  />
 
                   <div className="add-actions-row">
-                    <button type="submit" className="btn-primary save-btn" disabled={saving}>
-                      {saving ? "Saving…" : editingId ? "Update question & answer" : "Save question & answer"}
+                    <button
+                      type="submit"
+                      className="btn-primary save-btn"
+                      disabled={saving}
+                    >
+                      {saving
+                        ? "Saving…"
+                        : editingId
+                        ? "Update question & answer"
+                        : "Save question & answer"}
                     </button>
 
                     {editingId && (
-                      <button type="button" className="qa-btn qa-btn-cancel" onClick={handleCancelEdit}>Cancel edit</button>
+                      <button
+                        type="button"
+                        className="qa-btn qa-btn-cancel"
+                        onClick={handleCancelEdit}
+                      >
+                        Cancel edit
+                      </button>
                     )}
                   </div>
                 </form>
