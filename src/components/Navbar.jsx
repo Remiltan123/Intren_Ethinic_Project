@@ -8,7 +8,8 @@ import {
 import "../styles/navbar.css";
 import AdminAccessModal from "../components/AdminAccessModal";
 import { useAuth } from "../context/AuthContext";
-import { useLanguage } from "../context/LanguageContext"; // 🔥 NEW
+import { useLanguage } from "../context/LanguageContext";
+import { toast } from "react-toastify"; // 🔥 NEW
 
 // Common config for subject tabs
 const LANG_TABS = [
@@ -22,7 +23,7 @@ const LANG_TABS = [
 
 export default function Navbar({ openModal }) {
   const { user, logout } = useAuth();
-  const { language, setLanguage } = useLanguage(); // 🔥 admin filter
+  const { language, setLanguage } = useLanguage(); // admin filter
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -45,13 +46,23 @@ export default function Navbar({ openModal }) {
     navigate("/admin");
   }
 
-  // 🔥 Subject button click behaviour (admin vs user)
+  // 🔥 Subject button click behaviour (admin vs user + login check)
   function handleLangClick(tab) {
+    // ADMIN SIDE: only change selected language, no route change
     if (isAdminPage) {
-      // ADMIN SIDE: only change selected language, no route change
       setLanguage(tab.key);
-    } else {
-      // USER SIDE: normal routing
+      return;
+    }
+
+    // NOT LOGGED IN: show toast + open login modal, no navigation
+    if (!user) {
+      toast.info("Please login or sign up to explore subjects.");
+      if (openModal) openModal("signup");
+      return;
+    }
+
+    // LOGGED IN (normal user or admin not on /admin) → normal routing
+    if (tab.userPath) {
       navigate(tab.userPath);
     }
   }

@@ -53,13 +53,17 @@ export default function Home() {
             </Link>
 
             <Link to="/html" className="subject-card html">
-              <h3>HTML</h3>
-              <p>Structure, forms and semantics.</p>
+              <h3>HTML & CSS</h3>
+              <p>Layouts, flexbox and responsive design.</p>
             </Link>
 
             <Link to="/css" className="subject-card css">
-              <h3>CSS</h3>
-              <p>Layouts, flexbox and responsive design.</p>
+              <h3>REACT</h3>
+              <p>USE FOR WEB DESIGN</p>
+            </Link>
+            <Link to="/css" className="subject-card CC">
+              <h3>C / C++</h3>
+              <p>BASIC LANGUAGE FOR ALL.</p>
             </Link>
           </div>
         </section>

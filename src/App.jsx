@@ -25,7 +25,7 @@ import "react-toastify/dist/ReactToastify.css";
    Inner Routes component
    =========================== */
 function AppRoutes() {
-  const { user } = useAuth();              // { email, name, role } or null
+  const { user } = useAuth(); // { email, name, role } or null
   const [modalMode, setModalMode] = useState(null); // 'login' | 'signup' | null
 
   return (
@@ -42,7 +42,7 @@ function AppRoutes() {
       />
 
       <Routes>
-        {/* ROOT / 
+        {/* ROOT /
             - no user -> Home
             - user.role === 'user'  -> /dashboard
             - user.role === 'admin' -> /admin
@@ -62,11 +62,17 @@ function AppRoutes() {
           }
         />
 
-        {/* Public page */}
-        <Route path="/java" element={<JavaPage />} />
+        {/* Public pages */}
+        <Route
+          path="/java"
+          element={
+            // 🔥 pass setModalMode so JavaPage can open signup modal
+            <JavaPage openSignup={setModalMode} />
+          }
+        />
         <Route path="/contact" element={<ContactUs />} />
 
-        {/* USER DASHBOARD 
+        {/* USER DASHBOARD
             - normal user -> Dashboard
             - admin -> redirect to /admin
             - not logged -> Home
@@ -112,7 +118,10 @@ function AppRoutes() {
 
       {/* Login / Signup modal */}
       {modalMode && (
-        <AuthModal mode={modalMode} onClose={() => setModalMode(null)} />
+        <AuthModal
+          mode={modalMode}
+          onClose={() => setModalMode(null)}
+        />
       )}
     </>
   );
@@ -124,7 +133,7 @@ function AppRoutes() {
 export default function App() {
   return (
     <AuthProvider>
-      <LanguageProvider>      
+      <LanguageProvider>
         <BrowserRouter>
           <AppRoutes />
         </BrowserRouter>
