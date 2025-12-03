@@ -42,9 +42,11 @@ export default function Navbar({ openModal }) {
             <NavLink to="/java" className="nav-btn">Java</NavLink>
             <NavLink to="/python" className="nav-btn">Python</NavLink>
             <NavLink to="/javascript" className="nav-btn">JavaScript</NavLink>
-            <NavLink to="/html" className="nav-btn">HTML</NavLink>
-            <NavLink to="/css" className="nav-btn">CSS</NavLink>
-            <NavLink to="/cpp" className="nav-btn">C++</NavLink>
+            <NavLink to="/html" className="nav-btn">HTML & CSS</NavLink>
+            <NavLink to="/css" className="nav-btn">React</NavLink>
+            <NavLink to="/cpp" className="nav-btn">CC / C++</NavLink>
+            
+            
 
             {/* 🔥 Always show Contact (fixed) */}
             

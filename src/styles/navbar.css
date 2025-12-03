@@ -191,3 +191,13 @@
     display: none; /* mobile la later hamburger vechchukalam */
   }
 }
+.nav-spacer {
+  flex: 1 1 auto;
+  min-width: 6px; /* optional */
+}
+.auth-buttons {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}

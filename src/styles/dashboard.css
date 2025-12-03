@@ -2,7 +2,7 @@
 
 /* Page + overlay */
 .dashboard-page{
-  min-height: 70vh;
+  min-height: 100vh;
   padding: 48px 24px;
   position: relative;
   color: #e6eef6;

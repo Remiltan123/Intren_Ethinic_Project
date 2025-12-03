@@ -21,8 +21,6 @@ const STACKS = [
   { id: "cpp", label: "C / C++" },
   { id: "js", label: "JavaScript" },
   { id: "react", label: "React" },
-  { id: "react-native", label: "React Native" },
-  { id: "node", label: "Node.js" },
   { id: "python", label: "Python" },
   { id: "html-css", label: "HTML & CSS" },
 ];
