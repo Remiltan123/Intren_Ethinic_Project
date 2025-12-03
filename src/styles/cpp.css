@@ -1,14 +1,16 @@
-/* src/styles/cpp.css */
-
+/* -------------------------------------------------
+   GLOBAL PAGE LAYOUT (Same as Python theme)
+------------------------------------------------- */
 .cpp-page {
   min-height: 100vh;
-  background: radial-gradient(circle at top left, #020617 0, #020617 50%, #020617 100%);
+  background: radial-gradient(circle at top left, #020617 0, #020617 55%, #020617 100%);
   color: #e5e7eb;
   padding-bottom: 3rem;
 }
 
-/* --- HERO --- */
-
+/* -------------------------------------------------
+   HERO SECTION
+------------------------------------------------- */
 .cpp-hero {
   position: relative;
   min-height: 320px;
@@ -25,14 +27,14 @@
   inset: 0;
   background-image: linear-gradient(
       to right,
-      rgba(15, 23, 42, 0.95),
-      rgba(15, 23, 42, 0.7),
-      rgba(15, 23, 42, 0.4)
+      rgba(15, 23, 42, 0.96),
+      rgba(15, 23, 42, 0.75),
+      rgba(15, 23, 42, 0.45)
     ),
-    url("/cpp-bg.jpg"); /* /public/cpp-bg.jpg vechcha nalla irukkum */
+    url("/cpp-bg.jpg"); /* optional */
   background-size: cover;
   background-position: center;
-  filter: blur(0.3px);
+  filter: blur(0.4px);
   transform: scale(1.02);
   z-index: -2;
 }
@@ -40,22 +42,12 @@
 .cpp-hero-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.25), transparent 60%);
+  background: radial-gradient(circle at top left, rgba(96, 165, 250, 0.2), transparent 60%);
   z-index: -1;
 }
 
 .cpp-hero-content {
   max-width: 720px;
-}
-
-.cpp-pill {
-  display: inline-flex;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.6);
-  background: rgba(15, 23, 42, 0.9);
-  color: #e5e7eb;
-  font-size: 0.8rem;
 }
 
 .cpp-hero h1 {
@@ -65,7 +57,7 @@
 }
 
 .cpp-hero p {
-  max-width: 600px;
+  max-width: 650px;
   color: #cbd5f5;
   font-size: 0.98rem;
   margin-bottom: 18px;
@@ -75,33 +67,36 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 4px;
 }
 
 .cpp-badge {
-  font-size: 0.75rem;
-  padding: 7px 14px;
+  padding: 4px 10px;
   border-radius: 999px;
+  border: 1px solid rgba(96, 165, 250, 0.5);
   background: rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.8);
-  color: #e5e7eb;
+  color: #bfdbfe;
+  font-size: 0.78rem;
 }
 
-/* --- MAIN CONTENT --- */
-
+/* -------------------------------------------------
+   MAIN CONTENT WRAPPER
+------------------------------------------------- */
 .cpp-main {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 40px 8vw 60px;
+  padding: 40px 5vw 70px;
 }
 
 .cpp-section {
   margin-bottom: 42px;
+  
+  
 }
 
 .cpp-section h2 {
   font-size: 1.6rem;
   margin-bottom: 8px;
+  gap: 16px;
 }
 
 .cpp-section-intro {
@@ -110,17 +105,18 @@
   max-width: 720px;
 }
 
-/* grid cards */
-
+/* -------------------------------------------------
+   GRID CARDS
+------------------------------------------------- */
 .cpp-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
 }
 
 .cpp-card,
-.cpp-company-card {
-  background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.22), rgba(15, 23, 42, 0.95));
+.cpp-role-card {
+  background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.28), rgba(15, 23, 42, 0.96));
   border-radius: 18px;
   padding: 16px 18px;
   border: 1px solid rgba(148, 163, 184, 0.25);
@@ -128,20 +124,21 @@
 }
 
 .cpp-card h3,
-.cpp-company-card h3 {
+.cpp-role-card h3 {
   margin-bottom: 8px;
   font-size: 1.05rem;
 }
 
 .cpp-card ul,
-.cpp-company-card ul {
+.cpp-role-card ul {
   padding-left: 1.1rem;
   font-size: 0.93rem;
   color: #d1d5db;
 }
 
-/* CODE SECTION */
-
+/* -------------------------------------------------
+   CODE BLOCK SECTION
+------------------------------------------------- */
 .cpp-code-layout {
   display: grid;
   grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.4fr);
@@ -171,15 +168,9 @@
   border-radius: 999px;
   margin-right: 5px;
 }
-.cpp-dot.red {
-  background: #f97373;
-}
-.cpp-dot.yellow {
-  background: #facc15;
-}
-.cpp-dot.green {
-  background: #4ade80;
-}
+.cpp-dot.red { background: #f97373; }
+.cpp-dot.yellow { background: #facc15; }
+.cpp-dot.green { background: #4ade80; }
 
 .cpp-file-name {
   margin-left: 8px;
@@ -190,138 +181,176 @@
 .cpp-code-block {
   margin: 0;
   padding: 12px 14px 14px;
-  font-family: "JetBrains Mono", "Consolas", monospace;
+  font-family: "JetBrains Mono", Consolas, monospace;
   font-size: 0.82rem;
   line-height: 1.5;
   color: #e5e7eb;
-  background: radial-gradient(circle at top left, #020617, #020617);
+  background: #020617;
   overflow-x: auto;
 }
 
 .cpp-code-explain {
-  background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.25), rgba(15, 23, 42, 0.95));
+  background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.25), rgba(15, 23, 42, 0.96));
   border-radius: 18px;
   padding: 14px 16px;
-  border: 1px solid rgba(148, 163, 184, 0.5);
-  box-shadow: 0 16px 40px rgba(148, 163, 184, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.6);
+  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.2);
 }
 
 .cpp-code-explain h3 {
   margin-bottom: 8px;
 }
 
-.cpp-code-explain ol {
-  margin-left: 1.1rem;
-  color: #e5e7eb;
-  font-size: 0.95rem;
-}
-
-.cpp-tip {
-  margin-top: 8px;
-  font-size: 0.85rem;
-  color: #e5e7eb;
-}
-
-/* ROLES GRID */
-
-.cpp-role-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 18px;
-}
-
-.cpp-role-card {
-  background: radial-gradient(circle at top left, rgba(15, 118, 110, 0.25), rgba(15, 23, 42, 0.95));
-  border-radius: 18px;
-  padding: 16px 18px;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.7);
-}
-
-.cpp-role-card h3 {
-  margin-bottom: 6px;
-}
-
-.cpp-role-card p {
-  font-size: 0.9rem;
-  color: #e5e7eb;
-  margin-bottom: 8px;
-}
-
-.cpp-role-card ul {
-  padding-left: 1.1rem;
-  font-size: 0.9rem;
-  color: #d1d5db;
-}
-
-/* CTA */
-
+/* -------------------------------------------------
+   CTA SECTION (Python theme)
+------------------------------------------------- */
 .cpp-cta-section {
   margin-top: 20px;
 }
 
 .cpp-cta-box {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(148, 163, 184, 0.22));
+  background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), #020617 60%);
   border-radius: 24px;
-  padding: 22px 24px;
-  border: 1px solid rgba(34, 197, 94, 0.4);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 20px 50px rgba(34, 197, 94, 0.25);
+  padding: 22px 24px 26px;
+  border: 1px solid rgba(59, 130, 246, 0.6);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.9);
+  position: relative;
+  overflow: hidden;
 }
 
-.cpp-cta-box h3 {
-  margin-bottom: 4px;
-}
-
-.cpp-cta-box p {
-  color: #e5e7eb;
+.cpp-cta-box::before {
+  content: "";
+  position: absolute;
+  right: -70px;
+  top: -70px;
+  width: 230px;
+  height: 230px;
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.25), transparent 70%);
+  opacity: 0.4;
 }
 
 .cpp-cta-btn {
-  margin-top: 4px;
-  padding: 10px 26px;
+  margin-top: 8px;
+  padding: 10px 24px;
   font-size: 0.9rem;
-  width: fit-content;
   border-radius: 10px;
-  align-self: flex-start;
+  width: fit-content;
+}
 
-  background: #22c55e;
-  color: #ffffff;
-  border: none;
+/* -------------------------------------------------
+   YES / NO BUTTONS (Python style reused)
+------------------------------------------------- */
+.python-btn-primary {
+  padding: 8px 22px;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0f172a;
   font-weight: 600;
+  border: 1px solid rgba(203,213,225,0.4);
   transition: 0.2s ease;
 }
 
-.cpp-cta-btn:hover {
-  background: #16a34a;
+.python-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
+}
+
+.python-btn-dark {
+  padding: 8px 22px;
+  border-radius: 10px;
+  background: rgba(30, 41, 59, 0.95);
+  color: #e2e8f0;
+  font-weight: 600;
+  border: 1px solid rgba(71, 85, 105, 0.6);
+  transition: 0.2s ease;
+}
+
+.python-btn-dark:hover {
+  background: rgba(51, 65, 85, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(96, 165, 250, 0.25);
+}
+
+/* -------------------------------------------------
+   FILTERS + COMPANY PILLS + QUESTIONS (Shared Style)
+------------------------------------------------- */
+.field-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.district-select {
+  margin-top: 4px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(148,163,184,0.6);
+  background: rgba(15,23,42,0.9);
+  color: #e5e7eb;
+  font-size: 0.9rem;
+}
+
+.company-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.company-pill {
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(71, 85, 105, 0.6);
+  color: #e2e8f0;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.company-pill:hover {
+  background: rgba(51,65,85,0.9);
+  border-color: rgba(148,163,184,0.7);
   transform: translateY(-1px);
 }
 
-/* responsive */
+.company-pill--active {
+  background: linear-gradient(135deg, rgba(59,130,246,0.9), rgba(37,99,235,0.95));
+  color: #eff6ff;
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(59,130,246,0.7);
+}
 
+/* QUESTION CARDS */
+.question-card {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.3), rgba(15, 23, 42, 0.98));
+  border: 1px solid rgba(148,163,184,0.4);
+}
+
+.q-label,
+.a-label {
+  font-size: 0.9rem;
+  color: #e5e7eb;
+}
+
+.q-label { margin-bottom: 4px; }
+
+/* RESPONSIVE */
 @media (max-width: 900px) {
   .cpp-hero {
     padding: 70px 6vw 50px;
   }
-  .cpp-hero h1 {
-    font-size: 2rem;
-  }
-  .cpp-code-layout {
-    grid-template-columns: 1fr;
-  }
+  .cpp-hero h1 { font-size: 2rem; }
+  .cpp-code-layout { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 640px) {
-  .cpp-hero {
-    padding: 62px 18px 42px;
-  }
-  .cpp-main {
-    padding: 32px 18px 50px;
-  }
-  .cpp-badge-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  .cpp-hero { padding: 62px 18px 42px; }
+  .cpp-main { padding: 32px 18px 50px; }
 }

@@ -1,7 +1,95 @@
 // src/pages/HtmlCssPage.jsx
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { getCompanyQuestions } from "../services/companyQuestions";
 import "../styles/htmlcss.css";
 
+const COMPANIES_BY_DISTRICT = {
+  Colombo: [
+    { id: "creativehub", name: "Creative Hub", address: "Colombo 03" },
+    { id: "pixelcrafters", name: "Pixel Crafters", address: "Colombo 02" },
+    { id: "uiworks", name: "UI Works", address: "Colombo 07" }
+  ],
+  Jaffna: [
+    { id: "designlanka", name: "Design Lanka", address: "Jaffna" },
+    { id: "northweb", name: "North Web Studio", address: "Jaffna" }
+  ],
+  Kandy: [
+    { id: "kandyweb", name: "Kandy Web Lab", address: "Kandy" },
+    { id: "highlandui", name: "Highland UI Studio", address: "Kandy" }
+  ],
+  Galle: [
+    { id: "southernui", name: "Southern UI", address: "Galle" },
+    { id: "blueoceanweb", name: "Blue Ocean Web", address: "Galle" }
+  ]
+};
+
+const DISTRICTS = Object.keys(COMPANIES_BY_DISTRICT);
+
 export default function HtmlCssPage({ openSignup }) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const [started, setStarted] = useState(false);
+
+  const [activeDistrict, setActiveDistrict] = useState("Colombo");
+  const [activeCompanyId, setActiveCompanyId] = useState(
+    COMPANIES_BY_DISTRICT["Colombo"][0]?.id || ""
+  );
+
+  const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const companiesInDistrict = useMemo(
+    () => COMPANIES_BY_DISTRICT[activeDistrict] || [],
+    [activeDistrict]
+  );
+
+  const selectedCompany = useMemo(
+    () =>
+      companiesInDistrict.find((c) => c.id === activeCompanyId) ||
+      companiesInDistrict[0] ||
+      null,
+    [companiesInDistrict, activeCompanyId]
+  );
+
+  // reset on login/logout
+  useEffect(() => {
+    setStarted(false);
+    setQuestions([]);
+    setLoading(false);
+  }, [user]);
+
+  // fetch questions when YES pressed + filters change
+  useEffect(() => {
+    if (!user || !started || !selectedCompany) return;
+
+    async function load() {
+      setLoading(true);
+      try {
+        const data = await getCompanyQuestions(
+          "htmlcss",
+          activeDistrict,
+          selectedCompany.id
+        );
+        setQuestions(data);
+      } catch (err) {
+        console.error("Failed loading HTML/CSS questions:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    load();
+  }, [user, started, activeDistrict, selectedCompany]);
+
+  function handleChangeDistrict(d) {
+    setActiveDistrict(d);
+    const firstCompany = COMPANIES_BY_DISTRICT[d]?.[0] || null;
+    setActiveCompanyId(firstCompany ? firstCompany.id : "");
+  }
+
   return (
     <div className="html-page">
       {/* HERO */}
@@ -9,18 +97,16 @@ export default function HtmlCssPage({ openSignup }) {
         <div className="html-hero-overlay" />
 
         <div className="html-hero-content">
-         
-
-          <h1>Build clean layouts with HTML &amp; CSS.</h1>
+          <h1>Build clean layouts with HTML & CSS.</h1>
 
           <p>
-            Understand how web pages are structured with HTML and styled with CSS.
-            Learn the core concepts interviewers expect for frontend roles.
+            Understand how pages are structured with HTML and styled with CSS.
+            Learn concepts interviewers expect for frontend roles.
           </p>
 
           <div className="html-badge-row">
             <span className="html-badge">Semantic HTML</span>
-            <span className="html-badge">Flexbox &amp; Grid</span>
+            <span className="html-badge">Flexbox & Grid</span>
             <span className="html-badge">Responsive design</span>
           </div>
         </div>
@@ -28,49 +114,48 @@ export default function HtmlCssPage({ openSignup }) {
 
       {/* MAIN */}
       <main className="html-main">
-        {/* BASICS GRID */}
+        {/* BASICS */}
         <section className="html-section">
-          <h2>HTML &amp; CSS basics in a nutshell</h2>
+          <h2>HTML & CSS basics in a nutshell</h2>
           <p className="html-section-intro">
-            HTML gives the structure of the page, CSS gives the style. Most
-            interviews test how well you use semantic tags and modern layout
-            techniques like Flexbox and Grid.
+            HTML gives the structure, CSS gives the style. Most interviews test
+            semantic markup and layout techniques.
           </p>
 
           <div className="html-grid">
             <div className="html-card">
               <h3>HTML structure</h3>
               <ul>
-                <li>Use semantic tags: <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;footer&gt;</code>.</li>
-                <li>Separate content from presentation.</li>
-                <li>Use proper headings (<code>h1</code>–<code>h6</code>).</li>
+                <li>Use semantic tags: header, main, footer.</li>
+                <li>Clean, readable markup.</li>
+                <li>Proper heading structure.</li>
               </ul>
             </div>
 
             <div className="html-card">
               <h3>CSS basics</h3>
               <ul>
-                <li>Selectors, classes and IDs.</li>
-                <li>Box model: margin, border, padding, content.</li>
-                <li>Display types: <code>block</code>, <code>inline</code>, <code>flex</code>.</li>
+                <li>Selectors, classes, IDs.</li>
+                <li>Box model fundamentals.</li>
+                <li>Display types: block, inline, flex.</li>
               </ul>
             </div>
 
             <div className="html-card">
               <h3>Layouts</h3>
               <ul>
-                <li>Flexbox for 1-dimensional layouts.</li>
-                <li>CSS Grid for full page layouts.</li>
-                <li>Centering content safely.</li>
+                <li>Flexbox—centering & alignment.</li>
+                <li>CSS Grid—full page layouts.</li>
+                <li>Reusable structures.</li>
               </ul>
             </div>
 
             <div className="html-card">
               <h3>Responsive design</h3>
               <ul>
-                <li>Use relative units: <code>%</code>, <code>rem</code>, <code>vh</code>, <code>vw</code>.</li>
-                <li>Media queries for breakpoints.</li>
-                <li>Mobile-first styles.</li>
+                <li>Use rem, %, vw, fr units.</li>
+                <li>Mobile-first design.</li>
+                <li>Fluid grids.</li>
               </ul>
             </div>
           </div>
@@ -78,10 +163,10 @@ export default function HtmlCssPage({ openSignup }) {
 
         {/* CODE EXAMPLE */}
         <section className="html-section">
-          <h2>See a tiny HTML &amp; CSS layout</h2>
+          <h2>See a tiny HTML & CSS layout</h2>
+
           <p className="html-section-intro">
-            This example shows a simple responsive card layout. Similar snippets
-            appear in take-home tests and whiteboard interviews.
+            This example shows a simple, responsive card layout.
           </p>
 
           <div className="html-code-layout">
@@ -102,7 +187,7 @@ export default function HtmlCssPage({ openSignup }) {
 
   <article class="card">
     <h2>Responsive ready</h2>
-    <p>Layout adapts to screen size.</p>
+    <p>Layout adapts automatically.</p>
   </article>
 </section>`}
               </pre>
@@ -136,73 +221,132 @@ export default function HtmlCssPage({ openSignup }) {
           <div className="html-code-explain">
             <h3>What this layout shows</h3>
             <ol>
-              <li><strong>Semantic HTML</strong> – using <code>section</code> and <code>article</code>.</li>
-              <li><strong>CSS Grid</strong> – <code>auto-fit</code> + <code>minmax</code> for responsive cards.</li>
-              <li><strong>Card design</strong> – border radius, padding, background.</li>
+              <li>Semantic HTML with section + article.</li>
+              <li>CSS Grid using auto-fit + minmax.</li>
+              <li>Dark UI card design.</li>
             </ol>
-            <p className="html-tip">
-              In interviews, explain how this layout shrinks nicely on mobile
-              without extra media queries.
-            </p>
           </div>
         </section>
 
-        {/* ROLES SECTION */}
-        <section className="html-section">
-          <h2>Roles that need strong HTML &amp; CSS</h2>
-          <p className="html-section-intro">
-            Almost every frontend job expects you to write clean, semantic HTML
-            and modern CSS. Some roles focus heavily on pixel-perfect UI.
-          </p>
-
-          <div className="html-role-grid">
-            <div className="html-role-card">
-              <h3>UI Developer</h3>
-              <p>Transforms Figma designs into production-ready HTML &amp; CSS.</p>
-              <ul>
-                <li>Pixel-perfect layouts.</li>
-                <li>Reusable components.</li>
-                <li>Animation &amp; transitions.</li>
-              </ul>
-            </div>
-
-            <div className="html-role-card">
-              <h3>Frontend Engineer</h3>
-              <p>Combines HTML, CSS and JavaScript/React.</p>
-              <ul>
-                <li>Responsive page structures.</li>
-                <li>CSS architecture (BEM, modules, Tailwind).</li>
-                <li>Accessibility &amp; ARIA.</li>
-              </ul>
-            </div>
-
-            <div className="html-role-card">
-              <h3>Web Designer / Developer</h3>
-              <p>Owns both visual design and implementation.</p>
-              <ul>
-                <li>Landing pages &amp; marketing sites.</li>
-                <li>Typography &amp; color systems.</li>
-                <li>Performance-friendly layouts.</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
+        {/* CTA + QUESTIONS */}
         <section className="html-cta-section">
           <div className="html-cta-box">
-            <h3>Ready to practice HTML &amp; CSS interview questions?</h3>
-            <p>
-              Create a free CodeCeylon account and access HTML &amp; CSS
-              questions asked by Sri Lankan companies, with guidance from admins.
-            </p>
 
-            <button
-              className="html-cta-btn"
-              onClick={() => openSignup("signup")}
-            >
-              Learn more &amp; sign up
-            </button>
+            {/* 1 — LOGIN ILLA */}
+            {!user && (
+              <>
+                <h3>Ready to practice HTML & CSS interview questions?</h3>
+                <p>Create a free account to continue.</p>
+                <button
+                  className="html-cta-btn"
+                  onClick={() => openSignup("signup")}
+                >
+                  Learn more & sign up
+                </button>
+              </>
+            )}
+
+            {/* 2 — LOGIN IRUKKU but YES click pannala */}
+            {user && !started && (
+              <>
+                <h3>Ready to practice HTML & CSS interview questions?</h3>
+                <p>We’ll show real company interview questions. Continue?</p>
+
+                <div className="btn-row">
+                  <button
+                    className="python-btn-primary"
+                    onClick={() => setStarted(true)}
+                  >
+                    Yes
+                  </button>
+
+                  <button
+                    className="python-btn-dark"
+                    onClick={() => navigate("/dashboard")}
+                  >
+                    No
+                  </button>
+                </div>
+              </>
+            )}
+
+            {/* 3 — LOGIN IRUKKU + YES pressed */}
+            {user && started && (
+              <div className="python-questions-flow">
+                <h3>Practice HTML & CSS interview questions</h3>
+
+                {/* District */}
+                <div className="python-filter-row">
+                  <label className="field-label">
+                    District
+                    <select
+                      className="district-select"
+                      value={activeDistrict}
+                      onChange={(e) => handleChangeDistrict(e.target.value)}
+                    >
+                      {DISTRICTS.map((d) => (
+                        <option key={d} value={d}>
+                          {d}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+
+                {/* Company */}
+                <div className="python-filter-row">
+                  <p className="field-label">Company</p>
+
+                  <div className="company-pill-row">
+                    {companiesInDistrict.map((c) => (
+                      <button
+                        key={c.id}
+                        type="button"
+                        className={
+                          c.id === selectedCompany?.id
+                            ? "company-pill company-pill--active"
+                            : "company-pill"
+                        }
+                        onClick={() => setActiveCompanyId(c.id)}
+                      >
+                        {c.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Questions */}
+                <div className="questions-section">
+                  <h4>
+                    {selectedCompany
+                      ? `${selectedCompany.name} – HTML/CSS questions`
+                      : "HTML/CSS Questions"}
+                  </h4>
+
+                  {selectedCompany?.address && (
+                    <p className="company-meta">{selectedCompany.address}</p>
+                  )}
+
+                  {loading && <p>Loading questions…</p>}
+
+                  {!loading && questions.length === 0 && (
+                    <p>No questions added yet for this company.</p>
+                  )}
+
+                  {!loading &&
+                    questions.map((item) => (
+                      <article key={item.id} className="question-card">
+                        <p className="q-label">
+                          <strong>Q:</strong> {item.question}
+                        </p>
+                        <p className="a-label">
+                          <strong>A:</strong> {item.answer}
+                        </p>
+                      </article>
+                    ))}
+                </div>
+              </div>
+            )}
           </div>
         </section>
       </main>

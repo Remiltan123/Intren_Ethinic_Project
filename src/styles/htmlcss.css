@@ -2,12 +2,17 @@
 
 .html-page {
   min-height: 100vh;
-  background: radial-gradient(circle at top left, #020617 0, #020617 50%, #020617 100%);
+  background: radial-gradient(
+      circle at top left,
+      #020617 0,
+      #020617 55%,
+      #020617 100%
+    );
   color: #e5e7eb;
   padding-bottom: 3rem;
 }
 
-/* --- HERO --- */
+/* HERO */
 
 .html-hero {
   position: relative;
@@ -25,14 +30,14 @@
   inset: 0;
   background-image: linear-gradient(
       to right,
-      rgba(15, 23, 42, 0.95),
-      rgba(15, 23, 42, 0.7),
-      rgba(15, 23, 42, 0.4)
+      rgba(15, 23, 42, 0.96),
+      rgba(15, 23, 42, 0.75),
+      rgba(15, 23, 42, 0.45)
     ),
-    url("/htmlcss-bg.jpg"); /* /public/htmlcss-bg.jpg vechcha nalla irukkum */
+    url("/htmlcss-bg.jpg"); /* optional bg image */
   background-size: cover;
   background-position: center;
-  filter: blur(0.3px);
+  filter: blur(0.4px);
   transform: scale(1.02);
   z-index: -2;
 }
@@ -40,22 +45,16 @@
 .html-hero-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.22), transparent 60%);
+  background: radial-gradient(
+    circle at top left,
+    rgba(59, 130, 246, 0.22),
+    transparent 60%
+  );
   z-index: -1;
 }
 
 .html-hero-content {
   max-width: 720px;
-}
-
-.html-pill {
-  display: inline-flex;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(59, 130, 246, 0.5);
-  background: rgba(15, 23, 42, 0.9);
-  color: #bfdbfe;
-  font-size: 0.8rem;
 }
 
 .html-hero h1 {
@@ -65,7 +64,7 @@
 }
 
 .html-hero p {
-  max-width: 600px;
+  max-width: 650px;
   color: #cbd5f5;
   font-size: 0.98rem;
   margin-bottom: 18px;
@@ -75,24 +74,23 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 4px;
 }
 
 .html-badge {
-  font-size: 0.75rem;
-  padding: 7px 14px;
+  padding: 4px 10px;
   border-radius: 999px;
+  border: 1px solid rgba(96, 165, 250, 0.5);
   background: rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.6);
-  color: #dbeafe;
+  color: #bfdbfe;
+  font-size: 0.78rem;
 }
 
-/* --- MAIN CONTENT --- */
+/* MAIN */
 
 .html-main {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 40px 8vw 60px;
+  padding: 40px 5vw 70px;
 }
 
 .html-section {
@@ -110,17 +108,24 @@
   max-width: 720px;
 }
 
-/* grid cards */
+/* GRID CARDS */
 
 .html-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  );
   gap: 16px;
 }
 
 .html-card,
-.html-company-card {
-  background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.22), rgba(15, 23, 42, 0.95));
+.html-role-card {
+  background: radial-gradient(
+    circle at top left,
+    rgba(37, 99, 235, 0.28),
+    rgba(15, 23, 42, 0.96)
+  );
   border-radius: 18px;
   padding: 16px 18px;
   border: 1px solid rgba(148, 163, 184, 0.25);
@@ -128,13 +133,13 @@
 }
 
 .html-card h3,
-.html-company-card h3 {
+.html-role-card h3 {
   margin-bottom: 8px;
   font-size: 1.05rem;
 }
 
 .html-card ul,
-.html-company-card ul {
+.html-role-card ul {
   padding-left: 1.1rem;
   font-size: 0.93rem;
   color: #d1d5db;
@@ -144,7 +149,7 @@
 
 .html-code-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.6fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
   gap: 20px;
   align-items: flex-start;
 }
@@ -194,17 +199,25 @@
   font-size: 0.82rem;
   line-height: 1.5;
   color: #e5e7eb;
-  background: radial-gradient(circle at top left, #020617, #020617);
+  background: radial-gradient(
+    circle at top left,
+    #020617,
+    #020617
+  );
   overflow-x: auto;
 }
 
 .html-code-explain {
-  margin-top: 20px;
-  background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), rgba(15, 23, 42, 0.95));
+  margin-top: 18px;
+  background: radial-gradient(
+    circle at top left,
+    rgba(59, 130, 246, 0.25),
+    rgba(15, 23, 42, 0.96)
+  );
   border-radius: 18px;
   padding: 14px 16px;
-  border: 1px solid rgba(59, 130, 246, 0.4);
-  box-shadow: 0 16px 40px rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.6);
+  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.2);
 }
 
 .html-code-explain h3 {
@@ -219,7 +232,7 @@
 
 .html-tip {
   margin-top: 8px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: #bfdbfe;
 }
 
@@ -227,32 +240,11 @@
 
 .html-role-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 18px;
-}
-
-.html-role-card {
-  background: radial-gradient(circle at top left, rgba(15, 118, 110, 0.25), rgba(15, 23, 42, 0.95));
-  border-radius: 18px;
-  padding: 16px 18px;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.7);
-}
-
-.html-role-card h3 {
-  margin-bottom: 6px;
-}
-
-.html-role-card p {
-  font-size: 0.9rem;
-  color: #e5e7eb;
-  margin-bottom: 8px;
-}
-
-.html-role-card ul {
-  padding-left: 1.1rem;
-  font-size: 0.9rem;
-  color: #d1d5db;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  );
+  gap: 16px;
 }
 
 /* CTA */
@@ -262,18 +254,37 @@
 }
 
 .html-cta-box {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(59, 130, 246, 0.12));
+  background: radial-gradient(
+    circle at top left,
+    rgba(15, 23, 42, 0.98),
+    #020617 60%
+  );
   border-radius: 24px;
-  padding: 22px 24px;
-  border: 1px solid rgba(34, 197, 94, 0.4);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 20px 50px rgba(34, 197, 94, 0.25);
+  padding: 22px 24px 26px;
+  border: 1px solid rgba(59, 130, 246, 0.6);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.9);
+  position: relative;
+  overflow: hidden;
+}
+
+.html-cta-box::before {
+  content: "";
+  position: absolute;
+  right: -70px;
+  top: -70px;
+  width: 230px;
+  height: 230px;
+  background: radial-gradient(
+    circle,
+    rgba(96, 165, 250, 0.25),
+    transparent 70%
+  );
+  opacity: 0.4;
 }
 
 .html-cta-box h3 {
-  margin-bottom: 4px;
+  font-size: 1.3rem;
+  font-weight: 700;
 }
 
 .html-cta-box p {
@@ -281,26 +292,14 @@
 }
 
 .html-cta-btn {
-  margin-top: 4px;
-  padding: 10px 26px;
+  margin-top: 8px;
+  padding: 10px 24px;
   font-size: 0.9rem;
-  width: fit-content;
   border-radius: 10px;
-  align-self: flex-start;
-
-  background: #22c55e;
-  color: #ffffff;
-  border: none;
-  font-weight: 600;
-  transition: 0.2s ease;
+  width: fit-content;
 }
 
-.html-cta-btn:hover {
-  background: #16a34a;
-  transform: translateY(-1px);
-}
-
-/* responsive */
+/* RESPONSIVE */
 
 @media (max-width: 900px) {
   .html-hero {

@@ -1,112 +1,199 @@
+// src/pages/JavaScriptPage.jsx
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { getCompanyQuestions } from "../services/companyQuestions";
 import "../styles/javascript.css";
 
+// SAME DISTRICT + COMPANY MAPPING (matching admin.jsx)
+const COMPANIES_BY_DISTRICT = {
+  Colombo: [
+    { id: "wso2", name: "WSO2", address: "20, Palm Grove, Colombo 03" },
+    { id: "virtusa", name: "Virtusa", address: "752, Dr Danister De Silva Mawatha, Colombo 09" },
+    { id: "syscolabs", name: "Sysco LABS", address: "55A, Dharmapala Mawatha, Colombo 03" },
+    { id: "ifs", name: "IFS", address: "Orion Towers 1, Colombo 09" },
+    { id: "ninetyninex", name: "99X", address: "Nawam Mawatha, Colombo 02" },
+    { id: "hsenid", name: "hSenid", address: "No. 32, Castle Street, Colombo 08" },
+  ],
+  Jaffna: [
+    { id: "loncey", name: "Loncey Tech (Pvt) Ltd", address: "259 Temple Rd, Jaffna 40000" },
+    { id: "speedit", name: "Speed IT Net", address: "Jaffna" },
+    { id: "appslanka", name: "Apps Lanka Software Solutions", address: "No.40 Palaly Road, Jaffna" },
+    { id: "3axislabs", name: "3axislabs", address: "Jaffna" },
+    { id: "technovate", name: "Technovate", address: "Jaffna" },
+  ],
+  Kandy: [
+    { id: "glenzsoft", name: "Glenzsoft", address: "255/21, Dr C D L Fernando Mawatha, Kandy" },
+    { id: "splendorport", name: "SplendorPort", address: "Kandy" },
+    { id: "kitsweb", name: "Kits Web Creations", address: "Kandy" },
+    { id: "ontech", name: "Ontech IT Solutions", address: "Kandy" },
+  ],
+  Galle: [
+    { id: "sanmark", name: "Sanmark Solutions", address: "Galle" },
+    { id: "jetapp", name: "Jetapp", address: "Galle" },
+    { id: "galleit", name: "Galle IT Solutions", address: "34 Talbot Town, Galle" },
+    { id: "webnifix", name: "Webnifix", address: "Galle" },
+  ],
+};
+
+const DISTRICTS = Object.keys(COMPANIES_BY_DISTRICT);
+
 export default function JavaScriptPage({ openSignup }) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  // YES/NO flow
+  const [started, setStarted] = useState(false);
+
+  // District & Company
+  const [activeDistrict, setActiveDistrict] = useState("Colombo");
+  const [activeCompanyId, setActiveCompanyId] = useState(COMPANIES_BY_DISTRICT["Colombo"][0]?.id);
+
+  // Questions
+  const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const companiesInDistrict = useMemo(
+    () => COMPANIES_BY_DISTRICT[activeDistrict] || [],
+    [activeDistrict]
+  );
+
+  const selectedCompany = useMemo(() => {
+    return (
+      companiesInDistrict.find((c) => c.id === activeCompanyId) ||
+      companiesInDistrict[0] ||
+      null
+    );
+  }, [companiesInDistrict, activeCompanyId]);
+
+  // Reset when login state changes
+  useEffect(() => {
+    setStarted(false);
+    setQuestions([]);
+    setLoading(false);
+  }, [user]);
+
+  // Fetch JS questions from Firestore
+  useEffect(() => {
+    if (!user || !started || !selectedCompany) return;
+
+    async function load() {
+      setLoading(true);
+      try {
+        const data = await getCompanyQuestions("js", activeDistrict, selectedCompany.id);
+        setQuestions(data);
+      } catch (err) {
+        console.error("Failed to load JS questions", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    load();
+  }, [user, started, activeDistrict, selectedCompany]);
+
+  function handleNo() {
+    navigate("/dashboard");
+  }
+
+  function handleChangeDistrict(d) {
+    setActiveDistrict(d);
+    const firstCompany = COMPANIES_BY_DISTRICT[d]?.[0];
+    setActiveCompanyId(firstCompany ? firstCompany.id : "");
+  }
+
   return (
-    <div className="js-page">
+    <div className="javascript-page">
       {/* HERO */}
-      <section className="js-hero">
-        <div className="js-hero-overlay" />
-
-        <div className="js-hero-content">
-
+      <section className="javascript-hero">
+        <div className="javascript-hero-overlay" />
+        <div className="javascript-hero-content">
           <h1>Master JavaScript for modern web apps</h1>
-
           <p>
-            Understand how JavaScript runs in the browser, powers frontend UIs,
-            talks to APIs and even runs on the server with Node.js.
+            Learn how JavaScript powers frontend UIs, handles async operations,
+            and runs backend services with Node.js.
           </p>
 
-          <div className="js-badge-row">
-            <span className="js-badge">Language of the browser</span>
-            <span className="js-badge">Async &amp; promises</span>
-            <span className="js-badge">Used in full-stack roles</span>
+          <div className="javascript-badge-row">
+            <span className="javascript-badge">Language of the browser</span>
+            <span className="javascript-badge">Async &amp; Promises</span>
+            <span className="javascript-badge">Full-stack friendly</span>
           </div>
         </div>
       </section>
 
       {/* MAIN CONTENT */}
-      <main className="js-main">
-        {/* BASICS GRID */}
-        <section className="js-section">
+      <main className="javascript-main">
+        {/* BASICS */}
+        <section className="javascript-section">
           <h2>JavaScript basics in a nutshell</h2>
-          <p className="js-section-intro">
-            JavaScript is a high-level, dynamic language used for frontend,
-            backend and even mobile apps. Interview questions often focus on
-            concepts like scope, async behaviour and the DOM.
+          <p className="javascript-section-intro">
+            JavaScript runs everywhere — browsers, servers, mobile apps — making it one of the most important languages today.
           </p>
 
-          <div className="js-grid">
-            <div className="js-card">
-              <h3>How JavaScript runs</h3>
+          <div className="javascript-grid">
+            <div className="javascript-card">
+              <h3>How JS runs</h3>
               <ul>
-                <li>Runs in the browser JavaScript engine (V8, SpiderMonkey).</li>
-                <li>Single-threaded with an event loop.</li>
-                <li>Works closely with the DOM and browser APIs.</li>
+                <li>Runs in browser engines (V8, SpiderMonkey)</li>
+                <li>Event loop & asynchronous execution</li>
+                <li>Manipulates DOM & browser APIs</li>
               </ul>
             </div>
 
-            <div className="js-card">
+            <div className="javascript-card">
               <h3>Core concepts</h3>
               <ul>
-                <li>Variables (<code>let</code>, <code>const</code>).</li>
-                <li>Functions, arrow functions and callbacks.</li>
-                <li>Closures, scope and hoisting.</li>
+                <li>Variables & scope</li>
+                <li>Functions, closures & hoisting</li>
+                <li>Arrow functions, callbacks</li>
               </ul>
             </div>
 
-            <div className="js-card">
+            <div className="javascript-card">
               <h3>Async behaviour</h3>
               <ul>
-                <li>Promises &amp; <code>async / await</code>.</li>
-                <li>setTimeout, event loop &amp; microtasks.</li>
-                <li>Calling REST APIs with <code>fetch()</code>.</li>
+                <li>Promises & async/await</li>
+                <li>Event loop & microtasks</li>
+                <li>fetch() for REST API calls</li>
               </ul>
             </div>
 
-            <div className="js-card">
+            <div className="javascript-card">
               <h3>Where it's used</h3>
               <ul>
-                <li>Frontend SPA frameworks (React, Vue, Angular).</li>
-                <li>Backend Node.js services.</li>
-                <li>Cross-platform mobile apps &amp; tools.</li>
+                <li>Frontend frameworks (React, Vue, Angular)</li>
+                <li>Backend APIs with Node.js</li>
+                <li>Cross-platform mobile apps</li>
               </ul>
             </div>
           </div>
         </section>
 
         {/* CODE EXAMPLE */}
-        <section className="js-section">
+        <section className="javascript-section">
           <h2>A tiny JavaScript example</h2>
-          <p className="js-section-intro">
-            This example fetches JSON data from an API and updates part of the
-            page. Exactly this style of question appears in frontend interviews.
+          <p className="javascript-section-intro">
+            This code fetches user data from an API and updates the page — common interview topic.
           </p>
 
-          <div className="js-code-layout">
-            <div className="js-code-card">
-              <div className="js-code-header">
-                <span className="js-dot red" />
-                <span className="js-dot yellow" />
-                <span className="js-dot green" />
-                <span className="js-file-name">fetch-users.js</span>
+          <div className="javascript-code-layout">
+            <div className="javascript-code-card">
+              <div className="javascript-code-header">
+                <span className="javascript-dot red" />
+                <span className="javascript-dot yellow" />
+                <span className="javascript-dot green" />
+                <span className="javascript-file-name">fetch-users.js</span>
               </div>
 
-              <pre className="js-code-block">
-{`const list = document.querySelector("#user-list");
-
-async function loadUsers() {
+              <pre className="javascript-code-block">
+{`async function loadUsers() {
   try {
     const res = await fetch("https://api.example.com/users");
     const data = await res.json();
-
-    list.innerHTML = "";
-    data.forEach((user) => {
-      const li = document.createElement("li");
-      li.textContent = user.name;
-      list.appendChild(li);
-    });
+    console.log(data);
   } catch (err) {
-    console.error("Failed to load users:", err);
+    console.error("Error:", err);
   }
 }
 
@@ -114,78 +201,132 @@ loadUsers();`}
               </pre>
             </div>
 
-            <div className="js-code-explain">
-              <h3>What this code shows</h3>
+            <div className="javascript-code-explain">
+              <h3>What this shows</h3>
               <ol>
-                <li><strong>DOM API</strong> – <code>querySelector</code> &amp; <code>createElement</code>.</li>
-                <li><strong>Async</strong> – <code>async / await</code> with <code>fetch()</code>.</li>
-                <li><strong>Error handling</strong> – <code>try / catch</code> for failed requests.</li>
-                <li><strong>Rendering</strong> – updating the DOM from JS data.</li>
+                <li>Async API calls</li>
+                <li>Awaiting promises</li>
+                <li>Error handling</li>
+                <li>How browsers run async JS</li>
               </ol>
-              <p className="js-tip">
-                In interviews, explain the event loop, why <code>await</code> is
-                used and how the DOM update is triggered.
-              </p>
             </div>
           </div>
         </section>
 
-        {/* ROLES GRID */}
-        <section className="js-section">
-          <h2>JavaScript roles you can target</h2>
-          <p className="js-section-intro">
-            With strong JavaScript skills, you can move into frontend,
-            full-stack or Node.js backend roles – all in high demand.
-          </p>
+        {/* JAVASCRIPT CTA + QUESTIONS FLOW */}
+        <section className="javascript-section javascript-cta-section">
+          <div className="javascript-cta-box">
+            {/* USER NOT LOGGED IN */}
+            {!user && (
+              <>
+                <h3>Ready to practice JavaScript interview questions?</h3>
+                <p>Sign up to unlock district-wise and company-based JS questions.</p>
+                <button className="javascript-cta-btn" onClick={() => openSignup("signup")}>
+                  Learn more &amp; sign up
+                </button>
+              </>
+            )}
 
-          <div className="js-role-grid">
-            <div className="js-role-card">
-              <h3>Frontend Engineer</h3>
-              <p>Focus on UI, UX and browser-side logic.</p>
-              <ul>
-                <li>React / Vue / Angular components.</li>
-                <li>State management &amp; routing.</li>
-                <li>Performance &amp; accessibility.</li>
-              </ul>
-            </div>
+            {/* LOGGED IN BUT NOT STARTED */}
+            {user && !started && (
+              <>
+                <h3>Ready to practice JavaScript interview questions?</h3>
+                <p>We’ll show you real questions from Sri Lankan companies. Continue?</p>
 
-            <div className="js-role-card">
-              <h3>Full-stack Developer</h3>
-              <p>Build both frontend and backend using JavaScript.</p>
-              <ul>
-                <li>REST APIs with Node.js + Express.</li>
-                <li>Database access (MongoDB / SQL).</li>
-                <li>Authentication &amp; deployments.</li>
-              </ul>
-            </div>
+                <div className="btn-row">
+                  <div className="btn-row">
+  <button
+    className="javascript-btn-primary"
+    onClick={() => setStarted(true)}
+  >
+    Yes
+  </button>
 
-            <div className="js-role-card">
-              <h3>Node.js Backend Engineer</h3>
-              <p>Design scalable APIs and microservices.</p>
-              <ul>
-                <li>Async I/O &amp; streaming.</li>
-                <li>Background jobs &amp; queues.</li>
-                <li>Integration with 3rd-party services.</li>
-              </ul>
-            </div>
-          </div>
-        </section>
+  <button
+    className="javascript-btn-dark"
+    onClick={handleNo}
+  >
+    No
+  </button>
+</div>
 
-        {/* CTA */}
-        <section className="js-cta-section">
-          <div className="js-cta-box">
-            <h3>Ready to practice JavaScript interview questions?</h3>
-            <p>
-              Create a free CodeCeylon account and access company-wise JavaScript
-              interview questions, district filters and admin-curated content.
-            </p>
+                </div>
+              </>
+            )}
 
-            <button
-              className="js-cta-btn"
-              onClick={() => openSignup("signup")}
-            >
-              Learn more &amp; sign up
-            </button>
+            {/* LOGGED IN + STARTED */}
+            {user && started && (
+              <div className="javascript-questions-flow">
+                <h3>Practice JavaScript interview questions</h3>
+                <p>Select district & company</p>
+
+                {/* DISTRICT SELECT */}
+                <div className="javascript-filter-row">
+                  <label className="field-label">
+                    District
+                    <select
+                      className="district-select"
+                      value={activeDistrict}
+                      onChange={(e) => handleChangeDistrict(e.target.value)}
+                    >
+                      {DISTRICTS.map((d) => (
+                        <option key={d} value={d}>
+                          {d}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+
+                {/* COMPANY SELECT */}
+                <div className="javascript-filter-row">
+                  <p className="field-label">Company</p>
+                  <div className="company-pill-row">
+                    {companiesInDistrict.map((c) => (
+                      <button
+                        key={c.id}
+                        type="button"
+                        className={
+                          c.id === selectedCompany?.id
+                            ? "company-pill company-pill--active"
+                            : "company-pill"
+                        }
+                        onClick={() => setActiveCompanyId(c.id)}
+                      >
+                        {c.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* QUESTIONS LIST */}
+                <div className="questions-section">
+                  <h3>
+                    {selectedCompany ? `${selectedCompany.name} – JavaScript questions` : "Questions"}
+                  </h3>
+
+                  {selectedCompany?.address && (
+                    <p className="company-meta">{selectedCompany.address}</p>
+                  )}
+
+                  {loading && <p>Loading questions…</p>}
+
+                  {!loading && questions.length === 0 && <p>No questions found.</p>}
+
+                  {!loading &&
+                    questions.map((item) => (
+                      <article key={item.id} className="question-card">
+                        <p className="q-label">
+                          <strong>Q:</strong> {item.question}
+                        </p>
+                        <p className="a-label">
+                          <strong>A:</strong> {item.answer}
+                        </p>
+                      </article>
+                    ))}
+                </div>
+              </div>
+            )}
           </div>
         </section>
       </main>

@@ -2,12 +2,17 @@
 
 .react-page {
   min-height: 100vh;
-  background: radial-gradient(circle at top left, #020617 0, #020617 50%, #020617 100%);
+  background: radial-gradient(
+      circle at top left,
+      #020617 0,
+      #020617 55%,
+      #020617 100%
+    );
   color: #e5e7eb;
   padding-bottom: 3rem;
 }
 
-/* --- HERO --- */
+/* HERO */
 
 .react-hero {
   position: relative;
@@ -25,14 +30,14 @@
   inset: 0;
   background-image: linear-gradient(
       to right,
-      rgba(15, 23, 42, 0.95),
-      rgba(15, 23, 42, 0.7),
-      rgba(15, 23, 42, 0.4)
+      rgba(15, 23, 42, 0.96),
+      rgba(15, 23, 42, 0.75),
+      rgba(15, 23, 42, 0.45)
     ),
-    url("/react-bg.jpg"); /* /public/react-bg.jpg vechcha nalla irukkum */
+    url("/react-bg.jpg"); /* optional bg */
   background-size: cover;
   background-position: center;
-  filter: blur(0.3px);
+  filter: blur(0.4px);
   transform: scale(1.02);
   z-index: -2;
 }
@@ -40,22 +45,16 @@
 .react-hero-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 60%);
+  background: radial-gradient(
+    circle at top left,
+    rgba(59, 130, 246, 0.22),
+    transparent 60%
+  );
   z-index: -1;
 }
 
 .react-hero-content {
   max-width: 720px;
-}
-
-.react-pill {
-  display: inline-flex;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(56, 189, 248, 0.5);
-  background: rgba(15, 23, 42, 0.9);
-  color: #bae6fd;
-  font-size: 0.8rem;
 }
 
 .react-hero h1 {
@@ -65,7 +64,7 @@
 }
 
 .react-hero p {
-  max-width: 600px;
+  max-width: 650px;
   color: #cbd5f5;
   font-size: 0.98rem;
   margin-bottom: 18px;
@@ -75,24 +74,23 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 4px;
 }
 
 .react-badge {
-  font-size: 0.75rem;
-  padding: 7px 14px;
+  padding: 4px 10px;
   border-radius: 999px;
+  border: 1px solid rgba(96, 165, 250, 0.5);
   background: rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.6);
-  color: #e0f2fe;
+  color: #bfdbfe;
+  font-size: 0.78rem;
 }
 
-/* --- MAIN CONTENT --- */
+/* MAIN */
 
 .react-main {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 40px 8vw 60px;
+  padding: 40px 5vw 70px;
 }
 
 .react-section {
@@ -110,17 +108,24 @@
   max-width: 720px;
 }
 
-/* grid cards */
+/* GRID */
 
 .react-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  );
   gap: 16px;
 }
 
 .react-card,
-.react-company-card {
-  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), rgba(15, 23, 42, 0.95));
+.react-role-card {
+  background: radial-gradient(
+    circle at top left,
+    rgba(37, 99, 235, 0.28),
+    rgba(15, 23, 42, 0.96)
+  );
   border-radius: 18px;
   padding: 16px 18px;
   border: 1px solid rgba(148, 163, 184, 0.25);
@@ -128,13 +133,13 @@
 }
 
 .react-card h3,
-.react-company-card h3 {
+.react-role-card h3 {
   margin-bottom: 8px;
   font-size: 1.05rem;
 }
 
 .react-card ul,
-.react-company-card ul {
+.react-role-card ul {
   padding-left: 1.1rem;
   font-size: 0.93rem;
   color: #d1d5db;
@@ -194,16 +199,24 @@
   font-size: 0.82rem;
   line-height: 1.5;
   color: #e5e7eb;
-  background: radial-gradient(circle at top left, #020617, #020617);
+  background: radial-gradient(
+    circle at top left,
+    #020617,
+    #020617
+  );
   overflow-x: auto;
 }
 
 .react-code-explain {
-  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), rgba(15, 23, 42, 0.95));
+  background: radial-gradient(
+    circle at top left,
+    rgba(59, 130, 246, 0.25),
+    rgba(15, 23, 42, 0.96)
+  );
   border-radius: 18px;
   padding: 14px 16px;
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  box-shadow: 0 16px 40px rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.6);
+  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.2);
 }
 
 .react-code-explain h3 {
@@ -218,7 +231,7 @@
 
 .react-tip {
   margin-top: 8px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: #bfdbfe;
 }
 
@@ -226,32 +239,11 @@
 
 .react-role-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 18px;
-}
-
-.react-role-card {
-  background: radial-gradient(circle at top left, rgba(15, 118, 110, 0.25), rgba(15, 23, 42, 0.95));
-  border-radius: 18px;
-  padding: 16px 18px;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.7);
-}
-
-.react-role-card h3 {
-  margin-bottom: 6px;
-}
-
-.react-role-card p {
-  font-size: 0.9rem;
-  color: #e5e7eb;
-  margin-bottom: 8px;
-}
-
-.react-role-card ul {
-  padding-left: 1.1rem;
-  font-size: 0.9rem;
-  color: #d1d5db;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  );
+  gap: 16px;
 }
 
 /* CTA */
@@ -261,18 +253,37 @@
 }
 
 .react-cta-box {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(56, 189, 248, 0.08));
+  background: radial-gradient(
+    circle at top left,
+    rgba(15, 23, 42, 0.98),
+    #020617 60%
+  );
   border-radius: 24px;
-  padding: 22px 24px;
-  border: 1px solid rgba(34, 197, 94, 0.4);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 20px 50px rgba(34, 197, 94, 0.25);
+  padding: 22px 24px 26px;
+  border: 1px solid rgba(59, 130, 246, 0.6);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.9);
+  position: relative;
+  overflow: hidden;
+}
+
+.react-cta-box::before {
+  content: "";
+  position: absolute;
+  right: -70px;
+  top: -70px;
+  width: 230px;
+  height: 230px;
+  background: radial-gradient(
+    circle,
+    rgba(96, 165, 250, 0.25),
+    transparent 70%
+  );
+  opacity: 0.4;
 }
 
 .react-cta-box h3 {
-  margin-bottom: 4px;
+  font-size: 1.3rem;
+  font-weight: 700;
 }
 
 .react-cta-box p {
@@ -280,26 +291,14 @@
 }
 
 .react-cta-btn {
-  margin-top: 4px;
-  padding: 10px 26px;
+  margin-top: 8px;
+  padding: 10px 24px;
   font-size: 0.9rem;
-  width: fit-content;
   border-radius: 10px;
-  align-self: flex-start;
-
-  background: #22c55e;
-  color: #ffffff;
-  border: none;
-  font-weight: 600;
-  transition: 0.2s ease;
+  width: fit-content;
 }
 
-.react-cta-btn:hover {
-  background: #16a34a;
-  transform: translateY(-1px);
-}
-
-/* responsive */
+/* RESPONSIVE */
 
 @media (max-width: 900px) {
   .react-hero {

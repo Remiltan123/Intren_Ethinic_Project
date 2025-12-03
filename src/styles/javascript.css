@@ -1,15 +1,20 @@
 /* src/styles/javascript.css */
 
-.js-page {
+.javascript-page {
   min-height: 100vh;
-  background: radial-gradient(circle at top left, #020617 0, #020617 50%, #020617 100%);
+  background: radial-gradient(
+      circle at top left,
+      #020617 0,
+      #020617 55%,
+      #020617 100%
+    );
   color: #e5e7eb;
   padding-bottom: 3rem;
 }
 
-/* --- HERO --- */
+/* HERO */
 
-.js-hero {
+.javascript-hero {
   position: relative;
   min-height: 320px;
   padding: 80px 8vw 60px;
@@ -19,122 +24,122 @@
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
 }
 
-.js-hero::before {
+.javascript-hero::before {
   content: "";
   position: absolute;
   inset: 0;
   background-image: linear-gradient(
       to right,
-      rgba(15, 23, 42, 0.95),
-      rgba(15, 23, 42, 0.7),
-      rgba(15, 23, 42, 0.4)
+      rgba(15, 23, 42, 0.96),
+      rgba(15, 23, 42, 0.75),
+      rgba(15, 23, 42, 0.45)
     ),
-    url("/javascript-bg.jpg"); /* /public/javascript-bg.jpg vechcha nalla irukkum */
+    url("/javascript-bg.jpg"); /* optional bg image */
   background-size: cover;
   background-position: center;
-  filter: blur(0.3px);
+  filter: blur(0.4px);
   transform: scale(1.02);
   z-index: -2;
 }
 
-.js-hero-overlay {
+.javascript-hero-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 60%);
+  background: radial-gradient(
+    circle at top left,
+    rgba(59, 130, 246, 0.22),
+    transparent 60%
+  );
   z-index: -1;
 }
 
-.js-hero-content {
+.javascript-hero-content {
   max-width: 720px;
 }
 
-.js-pill {
-  display: inline-flex;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  background: rgba(15, 23, 42, 0.9);
-  color: #bae6fd;
-  font-size: 0.8rem;
-}
-
-.js-hero h1 {
+.javascript-hero h1 {
   font-size: 2.4rem;
   font-weight: 800;
   margin-bottom: 10px;
 }
 
-.js-hero p {
-  max-width: 600px;
+.javascript-hero p {
+  max-width: 650px;
   color: #cbd5f5;
   font-size: 0.98rem;
   margin-bottom: 18px;
 }
 
-.js-badge-row {
+.javascript-badge-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 4px;
 }
 
-.js-badge {
-  font-size: 0.75rem;
-  padding: 7px 14px;
+.javascript-badge {
+  padding: 4px 10px;
   border-radius: 999px;
+  border: 1px solid rgba(96, 165, 250, 0.5);
   background: rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.6);
-  color: #e0f2fe;
+  color: #bfdbfe;
+  font-size: 0.78rem;
 }
 
-/* --- MAIN CONTENT --- */
+/* MAIN */
 
-.js-main {
-  max-width: 1100px;
+.javascript-main {
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 40px 8vw 60px;
+  padding: 40px 5vw 70px;
 }
 
-.js-section {
+.javascript-section {
   margin-bottom: 42px;
 }
 
-.js-section h2 {
+.javascript-section h2 {
   font-size: 1.6rem;
   margin-bottom: 8px;
 }
 
-.js-section-intro {
+.javascript-section-intro {
   color: #9ca3af;
   margin-bottom: 18px;
   max-width: 720px;
 }
 
-/* grid cards */
+/* GRID CARDS */
 
-.js-grid {
+.javascript-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  );
   gap: 16px;
 }
 
-.js-card,
-.js-company-card {
-  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), rgba(15, 23, 42, 0.95));
+.javascript-card,
+.javascript-role-card {
+  background: radial-gradient(
+    circle at top left,
+    rgba(59, 130, 246, 0.28),
+    rgba(15, 23, 42, 0.96)
+  );
   border-radius: 18px;
   padding: 16px 18px;
   border: 1px solid rgba(148, 163, 184, 0.25);
   box-shadow: 0 16px 40px rgba(15, 23, 42, 0.7);
 }
 
-.js-card h3,
-.js-company-card h3 {
+.javascript-card h3,
+.javascript-role-card h3 {
   margin-bottom: 8px;
   font-size: 1.05rem;
 }
 
-.js-card ul,
-.js-company-card ul {
+.javascript-card ul,
+.javascript-role-card ul {
   padding-left: 1.1rem;
   font-size: 0.93rem;
   color: #d1d5db;
@@ -142,14 +147,14 @@
 
 /* CODE SECTION */
 
-.js-code-layout {
+.javascript-code-layout {
   display: grid;
   grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.4fr);
   gap: 20px;
   align-items: flex-start;
 }
 
-.js-code-card {
+.javascript-code-card {
   background: #020617;
   border-radius: 18px;
   border: 1px solid #1e293b;
@@ -157,7 +162,7 @@
   box-shadow: 0 18px 50px rgba(15, 23, 42, 0.9);
 }
 
-.js-code-header {
+.javascript-code-header {
   display: flex;
   align-items: center;
   padding: 6px 10px;
@@ -165,164 +170,308 @@
   border-bottom: 1px solid #111827;
 }
 
-.js-dot {
+.javascript-dot {
   width: 9px;
   height: 9px;
   border-radius: 999px;
   margin-right: 5px;
 }
-.js-dot.red {
+.javascript-dot.red {
   background: #f97373;
 }
-.js-dot.yellow {
+.javascript-dot.yellow {
   background: #facc15;
 }
-.js-dot.green {
+.javascript-dot.green {
   background: #4ade80;
 }
 
-.js-file-name {
+.javascript-file-name {
   margin-left: 8px;
   font-size: 0.78rem;
   color: #9ca3af;
 }
 
-.js-code-block {
+.javascript-code-block {
   margin: 0;
   padding: 12px 14px 14px;
   font-family: "JetBrains Mono", "Consolas", monospace;
   font-size: 0.82rem;
   line-height: 1.5;
   color: #e5e7eb;
-  background: radial-gradient(circle at top left, #020617, #020617);
+  background: radial-gradient(
+    circle at top left,
+    #020617,
+    #020617
+  );
   overflow-x: auto;
 }
 
-.js-code-explain {
-  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), rgba(15, 23, 42, 0.95));
+.javascript-code-explain {
+  background: radial-gradient(
+    circle at top left,
+    rgba(59, 130, 246, 0.25),
+    rgba(15, 23, 42, 0.96)
+  );
   border-radius: 18px;
   padding: 14px 16px;
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  box-shadow: 0 16px 40px rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.6);
+  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.2);
 }
 
-.js-code-explain h3 {
+.javascript-code-explain h3 {
   margin-bottom: 8px;
 }
 
-.js-code-explain ol {
+.javascript-code-explain ol {
   margin-left: 1.1rem;
   color: #e5e7eb;
   font-size: 0.95rem;
 }
 
-.js-tip {
-  margin-top: 8px;
-  font-size: 0.85rem;
-  color: #bfdbfe;
-}
-
 /* ROLES GRID */
 
-.js-role-grid {
+.javascript-role-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  );
+  gap: 16px;
 }
 
-.js-role-card {
-  background: radial-gradient(circle at top left, rgba(15, 118, 110, 0.25), rgba(15, 23, 42, 0.95));
-  border-radius: 18px;
-  padding: 16px 18px;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.7);
-}
+/* CTA (before questions) */
 
-.js-role-card h3 {
-  margin-bottom: 6px;
-}
-
-.js-role-card p {
-  font-size: 0.9rem;
-  color: #e5e7eb;
-  margin-bottom: 8px;
-}
-
-.js-role-card ul {
-  padding-left: 1.1rem;
-  font-size: 0.9rem;
-  color: #d1d5db;
-}
-
-/* CTA */
-
-.js-cta-section {
+.javascript-cta-section {
   margin-top: 20px;
 }
 
-.js-cta-box {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(56, 189, 248, 0.08));
+.javascript-cta-box {
+  background: radial-gradient(
+    circle at top left,
+    rgba(15, 23, 42, 0.98),
+    #020617 60%
+  );
   border-radius: 24px;
-  padding: 22px 24px;
-  border: 1px solid rgba(34, 197, 94, 0.4);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 20px 50px rgba(34, 197, 94, 0.25);
+  padding: 22px 24px 26px;
+  border: 1px solid rgba(59, 130, 246, 0.6);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.9);
+  position: relative;
+  overflow: hidden;
 }
 
-.js-cta-box h3 {
+.javascript-cta-box::before {
+  content: "";
+  position: absolute;
+  right: -70px;
+  top: -70px;
+  width: 230px;
+  height: 230px;
+  background: radial-gradient(
+    circle,
+    rgba(96, 165, 250, 0.25),
+    transparent 70%
+  );
+  opacity: 0.4;
+}
+
+.javascript-cta-box h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.javascript-cta-box p {
+  color: #e5e7eb;
+}
+
+.javascript-cta-btn {
+  margin-top: 8px;
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+/* ==== SHARED CONTROLS (Yes/No + filters + questions) ==== */
+
+.btn-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.field-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.district-select {
+  margin-top: 4px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.district-select:focus {
+  border-color: rgba(59, 130, 246, 0.9);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.6);
+}
+
+.javascript-questions-flow {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(15, 23, 42, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.javascript-filter-row {
+  margin-top: 4px;
+}
+
+/* company chips (same as python) */
+
+.company-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.company-pill {
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(71, 85, 105, 0.6);
+  color: #e2e8f0;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.company-pill:hover {
+  background: rgba(51, 65, 85, 0.9);
+  border-color: rgba(148, 163, 184, 0.7);
+  transform: translateY(-1px);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+}
+
+.company-pill--active {
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.9),
+    rgba(37, 99, 235, 0.95)
+  );
+  border-color: transparent;
+  color: #eff6ff;
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
+}
+
+/* questions list */
+
+.questions-section {
+  margin-top: 10px;
+}
+
+.questions-section h3,
+.questions-section h4 {
+  font-size: 1.05rem;
   margin-bottom: 4px;
 }
 
-.js-cta-box p {
-  color: #e5ebe5;
+.company-meta {
+  font-size: 0.83rem;
+  color: #9ca3af;
+  margin-bottom: 10px;
 }
 
-.js-cta-btn {
-  margin-top: 4px;
-  padding: 10px 26px;
+.question-card {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: radial-gradient(
+    circle at top left,
+    rgba(37, 99, 235, 0.3),
+    rgba(15, 23, 42, 0.98)
+  );
+  border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+.q-label,
+.a-label {
   font-size: 0.9rem;
-  width: fit-content;
-  border-radius: 10px;
-  align-self: flex-start;
-
-  /* same green CTA as python/java */
-  background: #22c55e;
-  color: #ffffff;
-  border: none;
-  font-weight: 600;
-  transition: 0.2s ease;
+  color: #e5e7eb;
 }
 
-.js-cta-btn:hover {
-  background: #16a34a;
-  transform: translateY(-1px);
+.q-label {
+  margin-bottom: 4px;
 }
 
-/* responsive */
+/* RESPONSIVE */
 
 @media (max-width: 900px) {
-  .js-hero {
+  .javascript-hero {
     padding: 70px 6vw 50px;
   }
-  .js-hero h1 {
+  .javascript-hero h1 {
     font-size: 2rem;
   }
-  .js-code-layout {
+  .javascript-code-layout {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 640px) {
-  .js-hero {
+  .javascript-hero {
     padding: 62px 18px 42px;
   }
-  .js-main {
+  .javascript-main {
     padding: 32px 18px 50px;
   }
-  .js-badge-row {
+  .javascript-badge-row {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+/* --- PRIMARY YES BUTTON (WHITE) --- */
+.javascript-btn-primary {
+  padding: 8px 22px;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 600;
+  border: 1px solid rgba(203, 213, 225, 0.4);
+  transition: 0.2s ease;
+}
+
+.javascript-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.18);
+}
+
+/* --- DARK NO BUTTON --- */
+.javascript-btn-dark {
+  padding: 8px 22px;
+  border-radius: 10px;
+  background: rgba(30, 41, 59, 0.96);
+  color: #e2e8f0;
+  font-weight: 600;
+  border: 1px solid rgba(71, 85, 105, 0.7);
+  transition: 0.2s ease;
+}
+
+.javascript-btn-dark:hover {
+  background: rgba(51, 65, 85, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
 }
