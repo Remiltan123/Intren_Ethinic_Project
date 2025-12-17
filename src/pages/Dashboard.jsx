@@ -1,9 +1,15 @@
 // src/pages/Dashboard.jsx
 import React, { useState } from "react";
 import "../styles/dashboard.css";
-import bgImg from "../assets/dashboard-bg.jpeg"; // ensure file exists
+import bgImg from "../assets/dashboard-bg.jpeg";
+
+// ✅ THEME
+import { useTheme } from "../context/ThemeContext";
+import "../pages/themeButton.css"; // same css used in Home
 
 export default function Dashboard() {
+  const { toggleTheme } = useTheme();
+
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [answer, setAnswer] = useState("");
@@ -30,6 +36,7 @@ export default function Dashboard() {
         const txt = await res.text();
         throw new Error(`Server returned ${res.status}: ${txt}`);
       }
+
       const data = await res.json();
       setAnswer(data.answer || "No answer returned.");
       setShowAnswer(true);
@@ -41,31 +48,29 @@ export default function Dashboard() {
     }
   }
 
-  function clearQuery() {
-    setQuery("");
-    setShowAnswer(false);
-    setAnswer("");
-  }
-
   return (
-   <div className="dashboard-page">
+    <div className="dashboard-page">
+      {/* 🌙 THEME TOGGLE – SAME AS HOME (TOP LEFT) */}
+      <button className="theme-toggle-btn" onClick={toggleTheme}>
+        <div className="icon-circle">
+          <div className="inner-half" />
+        </div>
+      </button>
 
-    
       <div className="dashboard-overlay" />
 
       <div className="dashboard-inner">
-        {/* Big welcome */}
-        
-        
-
-        {/* New heading: "If any doubts ask me" */}
+        {/* HEADING */}
         <div className="doubt-heading">
-          <h1>If you have any Questions, ask me </h1>
-          
+          <h1>If you have any Questions, ask me</h1>
         </div>
 
-        {/* SEARCH BAR */}
-        <form className="dashboard-search-wrapper" onSubmit={handleSubmit} role="search">
+        {/* SEARCH */}
+        <form
+          className="dashboard-search-wrapper"
+          onSubmit={handleSubmit}
+          role="search"
+        >
           <div className="search-input-wrap">
             <input
               type="search"
@@ -75,34 +80,54 @@ export default function Dashboard() {
               onChange={(e) => setQuery(e.target.value)}
               disabled={loading}
             />
-            
           </div>
 
-          <button className="dashboard-search-btn" type="submit" aria-label="Search" disabled={loading}>
+          <button
+            className="dashboard-search-btn"
+            type="submit"
+            disabled={loading}
+          >
             {loading ? "Searching…" : "Search"}
           </button>
         </form>
 
         {error && <div className="dashboard-error">{error}</div>}
 
-        {/* Extra block under search (replace content as needed) */}
+        {/* QUICK HELP */}
         <div className="dashboard-extra">
           <div className="extra-card">
             <h3>Quick help</h3>
             <ul>
-              <li>Ask questions like: <em>"Explain Java OOP with example"</em></li>
-              <li>Try short queries: <em>"arrays vs lists"</em></li>
-              <li>Use keywords for subject search: <em>"java loops past papers"</em></li>
+              <li>
+                Ask questions like:{" "}
+                <em>"Explain Java OOP with example"</em>
+              </li>
+              <li>
+                Try short queries: <em>"arrays vs lists"</em>
+              </li>
+              <li>
+                Use keywords: <em>"java loops past papers"</em>
+              </li>
             </ul>
           </div>
         </div>
 
-        {/* RESULT / ANSWER CARD */}
+        {/* ANSWER */}
         <div className="dashboard-result-area">
           {showAnswer && (
             <div className="dashboard-answer-card">
-              <button className="close-answer-btn" onClick={() => setShowAnswer(false)}>×</button>
-              <div className="dashboard-answer-text" dangerouslySetInnerHTML={{ __html: answer.replace(/\n/g, "<br/>") }} />
+              <button
+                className="close-answer-btn"
+                onClick={() => setShowAnswer(false)}
+              >
+                ×
+              </button>
+              <div
+                className="dashboard-answer-text"
+                dangerouslySetInnerHTML={{
+                  __html: answer.replace(/\n/g, "<br/>"),
+                }}
+              />
             </div>
           )}
         </div>
