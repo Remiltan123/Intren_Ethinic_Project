@@ -9,7 +9,7 @@ import {
 
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import JavaPage from "./pages/JavaPage";
+import JavaPage from "./pages/Javapage.jsx";           // 🔥 NEW
 import PythonPage from "./pages/PythonPage";        // 🔥 NEW
 import JavaScriptPage from "./pages/JavaScriptPage"; // 🔥 NEW
 import ContactUs from "./pages/ContactUs.jsx";
